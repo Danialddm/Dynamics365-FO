@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1401
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "ddm_project (USR) [ddm_model]", "ddm_project\ddm_project.rnrproj", "{8BA3546E-3D09-44D8-A384-F3806FAE1995}"
+EndProject
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "ddm_changeReport (USR) [ddm_model]", "ddm_changeReport\ddm_changeReport.rnrproj", "{DAF208C7-EAB7-4937-B221-75CF5543F45D}"
+EndProject
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "ddm_ChainofCommand (USR) [ddm_model]", "ddm_ChainofCommand\ddm_ChainofCommand.rnrproj", "{8F09F312-80C4-48EB-9B27-90F1D2CCDAAA}"
+EndProject
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "ddm_customWebService (USR) [ddm_model]", "ddm_customWebService\ddm_customWebService.rnrproj", "{67D92695-FB17-42BF-B8C0-5A128EF22D82}"
+EndProject
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "ddm_CustomerService (USR) [ddm_model]", "ddm_CustomerService\ddm_CustomerService.rnrproj", "{9961F318-2DDC-4703-B623-30304C9711CC}"
+EndProject
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "ddm_FormLookup (USR) [ddm_model]", "ddm_FormLookup\ddm_FormLookup.rnrproj", "{04879368-8295-421A-AA47-DF1B4ABB07BF}"
+EndProject
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "ddm_createSecurity (USR) [ddm_model]", "ddm_createSecurity\ddm_createSecurity.rnrproj", "{177621F6-961A-49A0-AEE6-3D31F77BEA34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BA3546E-3D09-44D8-A384-F3806FAE1995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA3546E-3D09-44D8-A384-F3806FAE1995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF208C7-EAB7-4937-B221-75CF5543F45D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF208C7-EAB7-4937-B221-75CF5543F45D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F09F312-80C4-48EB-9B27-90F1D2CCDAAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F09F312-80C4-48EB-9B27-90F1D2CCDAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D92695-FB17-42BF-B8C0-5A128EF22D82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D92695-FB17-42BF-B8C0-5A128EF22D82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9961F318-2DDC-4703-B623-30304C9711CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9961F318-2DDC-4703-B623-30304C9711CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04879368-8295-421A-AA47-DF1B4ABB07BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04879368-8295-421A-AA47-DF1B4ABB07BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{177621F6-961A-49A0-AEE6-3D31F77BEA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{177621F6-961A-49A0-AEE6-3D31F77BEA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9043CDC9-A4E8-47FE-8FE7-F6D3B8E276AC}
+	EndGlobalSection
+EndGlobal

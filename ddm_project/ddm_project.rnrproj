@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <BuildTasksDirectory Condition=" '$(BuildTasksDirectory)' == ''">$(MSBuildProgramFiles32)\MSBuild\Microsoft\Dynamics\AX</BuildTasksDirectory>
+    <Model>ddm_model</Model>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <OutputPath>bin</OutputPath>
+    <SchemaVersion>2.0</SchemaVersion>
+    <GenerateCrossReferences>True</GenerateCrossReferences>
+    <RunAppCheckerRules>False</RunAppCheckerRules>
+    <LogAppcheckerDiagsAsErrors>False</LogAppcheckerDiagsAsErrors>
+    <ProjectGuid>{8ba3546e-3d09-44d8-a384-f3806fae1995}</ProjectGuid>
+    <Name>ddm_project</Name>
+    <RootNamespace>ddm_project</RootNamespace>
+    <StartupObject>ddm_job</StartupObject>
+    <StartupType>Class</StartupType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Configuration>Debug</Configuration>
+    <DBSyncInBuild>False</DBSyncInBuild>
+    <GenerateFormAdaptors>False</GenerateFormAdaptors>
+    <Company>
+    </Company>
+    <Partition>initial</Partition>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DataEntityExpandParentChildRelations>False</DataEntityExpandParentChildRelations>
+    <DataEntityUseLabelTextAsFieldName>False</DataEntityUseLabelTextAsFieldName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="AxClass\ddm_getUrl">
+      <SubType>Content</SubType>
+      <Name>ddm_getUrl</Name>
+      <Link>ddm_getUrl</Link>
+    </Content>
+    <Content Include="AxClass\ddm_job">
+      <SubType>Content</SubType>
+      <Name>ddm_job</Name>
+      <Link>ddm_job</Link>
+    </Content>
+    <Content Include="AxForm\ddm_custForm">
+      <SubType>Content</SubType>
+      <Name>ddm_custForm</Name>
+      <Link>ddm_custForm</Link>
+    </Content>
+    <Content Include="AxMenuExtension\AccountsPayable.ddm_model">
+      <SubType>Content</SubType>
+      <Name>AccountsPayable.ddm_model</Name>
+      <Link>AccountsPayable.ddm_model</Link>
+    </Content>
+    <Content Include="AxMenuItemDisplay\ddm_DisplayMenuItem">
+      <SubType>Content</SubType>
+      <Name>ddm_DisplayMenuItem</Name>
+      <Link>ddm_DisplayMenuItem</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <Import Project="$(BuildTasksDirectory)\Microsoft.Dynamics.Framework.Tools.BuildTasks.targets" />
+</Project>
