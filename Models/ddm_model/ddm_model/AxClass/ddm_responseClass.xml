@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>ddm_responseClass</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[DataContractAttribute]
+class ddm_responseClass
+{
+    private boolean sucess;
+    private str errorMessage;
+    private str debugMessage;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>parmErrorMessage</Name>
+				<Source><![CDATA[
+    [DataMember("ErrorMessage")]//name of the JSON tag
+    public str parmErrorMessage(str _value = errorMessage)
+    {
+        if (!prmIsDefault(_value))
+        {
+            errorMessage = _value;
+        }
+        return errorMessage;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmSucessMessage</Name>
+				<Source><![CDATA[
+    [DataMember("SucessMessage")]
+    public boolean parmSucessMessage(boolean _value = sucess)
+    {
+        if (!prmIsDefault(_value))
+        {
+            sucess = _value;
+        }
+        return sucess;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmDebugMessage</Name>
+				<Source><![CDATA[
+    [DataMember("DebugMessage")]
+    public str parmDebugMessage(str _value = debugMessage)
+    {
+        if (!prmIsDefault(_value))
+        {
+            debugMessage = _value;
+        }
+        return debugMessage;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

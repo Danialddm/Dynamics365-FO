@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>ddm_serviceClass</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+class ddm_serviceClass
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>create</Name>
+				<Source><![CDATA[
+    public ddm_responseClass create(ddm_requestClass _request)
+    {
+        var response = new ddm_responseClass();
+        /*CustTable _custTable;
+        while select firstonly1 _custTable
+        {
+            _request.parmCustName(_custTable.name());
+        }*/
+        changecompany(_request.parmCustName())
+        {
+            try
+            {
+                //_request.parmCustName("sasa");
+                response.parmDebugMessage("Hello ddm");
+                response.parmSucessMessage(true);
+            }
+            catch (Exception::CLRError)
+            {
+                System.Exception interopException = CLRInterop::getLastException();
+
+                response.parmSucessMessage(false);
+                response.parmErrorMessage(interopException.ToString());
+            }
+            return response;
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

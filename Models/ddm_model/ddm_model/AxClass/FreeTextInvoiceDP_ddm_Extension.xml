@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>FreeTextInvoiceDP_ddm_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[ExtensionOf(classstr(FreeTextInvoiceDP))]
+public final class FreeTextInvoiceDP_ddm_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>populateFreeTextInvoiceHeaderFooterTmp</Name>
+				<Source><![CDATA[
+    protected void populateFreeTextInvoiceHeaderFooterTmp(CustInvoiceJour _custInvoiceJour, CompanyInfo _companyInfo)
+    {
+        next populateFreeTextInvoiceHeaderFooterTmp(_custInvoiceJour, _companyInfo);
+        FreeTextInvoiceHeaderFooterTmp freeTextInvoiceHeaderFooterTmp = this.parmFreeTextInvoiceHeaderFooterTmp();
+        freeTextInvoiceHeaderFooterTmp.DueDate = systemDateGet();
+        this.parmFreeTextInvoiceHeaderFooterTmp(freeTextInvoiceHeaderFooterTmp);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmFreeTextInvoiceHeaderFooterTmp</Name>
+				<Source><![CDATA[
+    public FreeTextInvoiceHeaderFooterTmp parmFreeTextInvoiceHeaderFooterTmp(FreeTextInvoiceHeaderFooterTmp _freeTextInvoiceHeaderFooterTmp = freeTextInvoiceHeaderFooterTmp)
+    {
+        freeTextInvoiceHeaderFooterTmp = _freeTextInvoiceHeaderFooterTmp;
+        return freeTextInvoiceHeaderFooterTmp;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

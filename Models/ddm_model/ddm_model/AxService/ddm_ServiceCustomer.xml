@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxService xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>ddm_ServiceCustomer</Name>
+	<Class>ddm_ServiceContract</Class>
+	<ExternalName>ddm_ServiceContract</ExternalName>
+	<ServiceOperations>
+		<AxServiceOperation>
+			<Name>get_customer</Name>
+			<Method>get_customer</Method>
+			<SubscriberAccessLevel>
+				<Read>Allow</Read>
+			</SubscriberAccessLevel>
+		</AxServiceOperation>
+	</ServiceOperations>
+</AxService>

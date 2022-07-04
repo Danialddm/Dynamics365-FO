@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>ddm_ServiceContract</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[DataContractAttribute]
+class ddm_ServiceContract //get parm from parmclass and base logic
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>get_customer</Name>
+				<Source><![CDATA[
+    public ddm_ResponseMessage get_customer(ddm_DataContractParm _request)
+    {
+        var response = new ddm_ResponseMessage();
+        changecompany(_request.parmCompanyId())
+        {
+            try
+            {
+                response._custAccount(this.custAccount());
+                response._custName(this.custName());
+                response.parmDebugMessage("Hello ddm");
+                response.parmSuccess(true);
+            }
+            catch (Exception::CLRError)
+            {
+                System.Exception interopException = CLRInterop::getLastException();
+
+                response.parmSuccess(false);
+                response.parmErrorMessage(interopException.ToString());
+            }
+            return response;
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>custName</Name>
+				<Source><![CDATA[
+    public List custName()
+    {
+        CustTable _custTable;
+        List nameList = new List(Types::String);
+        while select firstonly10  _custTable where _custTable.CustGroup == 'Store'
+        {
+            nameList.addStart(_custTable.name());
+        }
+        return nameList;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>custAccount</Name>
+				<Source><![CDATA[
+    public List custAccount()
+    {
+        CustTable _custTable;
+        List accList = new List(Types::String);
+        while select firstonly10 AccountNum from _custTable where _custTable.CustGroup == 'Store'
+        {
+            accList.addStart(_custTable.AccountNum);
+        }
+        return accList;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>
