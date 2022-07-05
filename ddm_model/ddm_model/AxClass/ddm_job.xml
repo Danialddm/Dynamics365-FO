@@ -18,9 +18,11 @@ class ddm_job
     public static void main(Args _args)
     {
         PurchTable _purchtable;
+        SalesTable _salestable;
         RecId _rec ;
         select count(RecId) from _purchtable;
-        info(strFmt("%1, recid", _purchtable.RecId));
+        select count(RecId) from _salestable;
+        info(strFmt("%1, recidofpurch","%2,recidofsales", _purchtable.RecId. _salestable.RecId));
     }
 
 ]]></Source>
