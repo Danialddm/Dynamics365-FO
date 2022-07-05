@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxServiceGroup xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>ddm_ServiceGroup</Name>
+	<Services>
+		<AxServiceGroupService>
+			<Name>ddm_serviceObject</Name>
+			<Service>ddm_serviceObject</Service>
+		</AxServiceGroupService>
+	</Services>
+</AxServiceGroup>

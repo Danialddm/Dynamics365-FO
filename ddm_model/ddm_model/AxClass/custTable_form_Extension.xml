@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>custTable_form_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[ExtensionOf(formStr(CustTable))]
+final class custTable_form_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>init</Name>
+				<Source><![CDATA[
+    public void init()
+    {
+        next init();
+        Posting_CustGroup.registerOverrideMethod(methodStr(FormDataObject, lookup), formMethodStr(CustTable, override_lookup));
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>override_lookup</Name>
+				<Source><![CDATA[
+    public void override_lookup(FormStringControl _formControl)
+    {
+        SysTableLookup systablelookup = SysTableLookup::newParameters(tableNum(CustGroup), _formControl);
+        // Add the lookup columns
+        systablelookup.addLookupfield(fieldNum(CustGroup, CustGroup));
+        systablelookup.addLookupfield(fieldNum(CustGroup, Name));
+        systablelookup.addLookupfield(fieldNum(CustGroup, PaymTermId));
+        // run the lookup
+        systablelookup.performFormLookup();
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>
