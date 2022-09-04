@@ -20,9 +20,9 @@ class ddm_job
         PurchTable _purchtable;
         SalesTable _salestable;
         RecId _rec ;
-        select count(RecId) from _purchtable;
+        select firstonly1 purchid from _purchtable;
         select count(RecId) from _salestable;
-        info(strFmt("%1, recidofpurch","%2,recidofsales", _purchtable.RecId. _salestable.RecId));
+        info(strFmt("purchid=%1,sales recid= %2",_purchtable.purchid,_salestable.RecId));
     }
 
 ]]></Source>
