@@ -1,0 +1,3 @@
+Fortunately, you still can. Using the SysClassRunner as the entry point in the URL and the cls parameter for the class name you wanted to execute.
+
+https://***.dynamics.com/?cmp=DAT&mi=SysClassRunner&cls=RunnableClass1
