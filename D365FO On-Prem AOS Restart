@@ -1,0 +1,7 @@
+Restarting an AOS in AX 2009 and 2012 is easy. Depending on the topology in D365, that can also be easy. However, performing the same action with Dynamics 365 For Finance and Operations on-premise isn't quite as easy because the service fabric is there. You have to ask the service fabric to restart the service rather just restart a windows based service. Here is the powershell that can restart the AXService.exe services for you which is, in simple terms, restarting the AOS. In the below example, this script would be run from one of the orchestrators and the AOS node names are AOS_233 and AOS_234. Your node names will be different. The server common name should be the name for the client cert and the thumbprint FindValue should be the thumbprint for that cert.
+
+$ConnectArgs = @{  ConnectionEndpoint = 'localhost:19000';  X509Credential = $True;  StoreLocation = 'CurrentUser';  StoreName = "MY";  ServerCommonName = "clientd365ffo.onprem.contoso.com";  FindType = 'FindByThumbprint';  FindValue = "11AAAA1111AA11A111A1AFA11011111A111AA110"   }
+Connect-ServiceFabricCluster @ConnectArgs
+
+Restart-ServiceFabricDeployedCodePackage -NodeName "AOS_233" -ApplicationName fabric:/AXSF -CodePackageName "Code" -ServiceManifestName "AXSF" -CommandCompletionMode Verify
+Restart-ServiceFabricDeployedCodePackage -NodeName "AOS_234" -ApplicationName fabric:/AXSF -CodePackageName "Code" -ServiceManifestName "AXSF" -CommandCompletionMode Verify
