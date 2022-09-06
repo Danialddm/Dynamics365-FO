@@ -36,3 +36,7 @@ AXUpdateInstaller.exe execute -runbookid=[runbookID] -rerunstep=[stepID]
 
 To prevent version mismatch or downgrade, or installation of the same deployable package, run the following command:
 AXUpdateInstaller.exe execute -runbookid=[runbook ID] -versioncheck=true
+================================================================================================================================
+in my case:
+C:\Users\danial.dadmohammadi\Desktop\AOT>AXUpdateInstaller.exe execute -runbookid="ddm31300313-runbook" -rerunstep="5"
+Start executing runbook : ddm31300313-runbook
