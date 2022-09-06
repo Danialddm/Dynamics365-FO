@@ -1,0 +1,3 @@
+LCS: Restart SANDBOX: STANDARD ACCEPTANCE TEST
+Suggested Answer
+There is no AOS anymore, application is hosted on IIS, so IIS restart is what you need.
