@@ -1,0 +1,5 @@
+Open form via its AOT name in D365 Finance & operations
+By Maria Jones S - May 27, 2021
+ For developers, it can come handy if they can directly open the form via its AOT name in D365 finance & operations rather than opening via its menu item. To do so, you can simply search in the search bar by typing form:<form AOT name>
+
+For example, users management form AOT name is PurchTable. When it is searched, all its references in ERP will be provided as search suggestion.
