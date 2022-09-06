@@ -1,0 +1,38 @@
+In this blog we will discuss that how we can install deployable packages by using the command line. Deployable package is a package that contains customization's and extensions to your application. 
+
+In AX7 / D365 we have two ways for the deployment of packages.
+1- Binary update
+2- AOT deployable package
+
+In any deployable packages we have three key concepts which describes as below.
+1- Deployable package: Consist of hotfixes.
+2- AxUpdateInstaller: Executable program that is bundled in the deployable package.
+3- Runbook: Series of steps that is generated and used to apply the deployable package.
+
+Steps for installation:
+1. Make sure your deployable package folder name does not contains any white space.
+2. Unzip deployable packages to your local folder.
+3. Close all Visual studio, SQL Server and internet explorer instances.
+4. Open command prompt and Run as Administrator.
+5. Change directory to deployable package. Command to target your folder
+    cd [your deployable package folder path]
+6. Run command AXUpdateInstaller.exe list to see any other runbooks which are already exist. Make sure you don't use already created runbook id. Please create unique runbook id.
+7. For creating runbook id run this command AXUpdateInstaller.exe generate -runbookid="MyRunBookId-runbook" -topologyfile="DefaultTopologyData.xml" -servicemodelfile="DefaultServiceModelData.xml" -runbookfile="MyRunBookId-runbook.xml".
+7. Now import runbook using command AXUpdateInstaller.exe import -runbookfile=MyRunBookId-runbook.xml"
+8. As final step for execution run this command AXUpdateInstaller.exe execute -runbookid=MyRunBookId-runbook"
+
+Commands:
+1- AXUpdateInstaller.exe list
+2- AXUpdateInstaller.exe generate -runbookid="MyRunBookId-runbook" -topologyfile="DefaultTopologyData.xml" -servicemodelfile="DefaultServiceModelData.xml" -runbookfile="MyRunBookId-runbook.xml"
+3- AXUpdateInstaller.exe import -runbookfile=MyRunBookId-runbook.xml
+4- AXUpdateInstaller.exe execute -runbookid=MyRunBookId-runbook
+
+MSDN Link: https://docs.microsoft.com/en-us/dynamics365/unified-operations/dev-itpro/deployment/install-deployable-package
+
+------------------------------------------------------------------------------------------------------------------------------------
+Troubleshooting
+If any step in the runbook fails, you can rerun it by running the following command:
+AXUpdateInstaller.exe execute -runbookid=[runbookID] -rerunstep=[stepID]
+
+To prevent version mismatch or downgrade, or installation of the same deployable package, run the following command:
+AXUpdateInstaller.exe execute -runbookid=[runbook ID] -versioncheck=true
