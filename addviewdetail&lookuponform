@@ -1,0 +1,41 @@
+[ExtensionOf(formStr(PurchRFQVendReply))]
+final class ARContractType_Form_Extension
+{
+    public void ARContractType_JumpRef(FormControl _formControl)
+    {
+        Args args = new Args();
+        MenuFunction menuFunction;
+        AgreementClassification  agreementClassification;//table
+        select agreementClassification where agreementClassification.Name == _formControl.valueStr();
+        args.record(agreementClassification);
+        args.lookupRecord(agreementClassification);
+        menuFunction = new MenuFunction(menuitemdisplaystr(AgreementClassification),MenuItemType::Display);
+        menuFunction.run(args);
+    }
+
+    public void ARContractType_lookup(FormStringControl _formControl)
+    {
+        SysTableLookup systablelookup = SysTableLookup::newParameters(tableNum(AgreementClassification), _formControl);
+        // Add the lookup columns
+        systablelookup.addLookupfield(fieldNum(AgreementClassification, Name));
+        // run the lookup
+        systablelookup.performFormLookup();
+    }
+
+    public void init()
+    {
+        FormStringControl   formStringControl_jumpRef, formStringControl_Lookup;
+
+        next init();
+
+        formStringControl_jumpRef = this.design().controlName(formControlStr(PurchRFQVendReply, ARLOVMaster));
+        formStringControl_jumpRef.registerOverrideMethod(methodStr(FormStringControl, jumpRef)
+            , methodStr(ARContractType_Form_Extension, ARContractType_JumpRef));
+
+        
+        formStringControl_Lookup = this.design().controlName(formControlStr(PurchRFQVendReply, ARLOVMaster));
+        formStringControl_Lookup.registerOverrideMethod(methodStr(FormStringControl, lookup)
+            , methodStr(ARContractType_Form_Extension, ARContractType_lookup));
+    }
+
+}
