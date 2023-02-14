@@ -1,0 +1,177 @@
+//nre method for class MCRLedgerJournal
+class MCRLedgerJournal_InvoiceRegisterJournal extends MCRLedgerJournal
+{
+    public LedgerJournalTrans createLedgerJournalTrans(AmountCurCredit      _amtCurCredit,
+                                                       AmountCurDebit       _amtCurDebit,
+        LedgerJournalACType  _LedgerJournalACType = LedgerJournalACType::Ledger)
+    {
+        LedgerJournalTrans ledgerJournalTrans;
+
+        //Validate the input to the ledger journal trans and ensure that a ledgerjournaltable
+        //exists before creating the ledger journalTrans.
+
+        if (this.validateInputLedgerJourTrans(_amtCurCredit,_amtCurDebit)
+            && ledgerJournalTable.RecId != 0)
+        {
+            this.initLedgerJournalTrans(ledgerJournalTrans);
+
+            ledgerJournalTrans.JournalNum = ledgerJournalTable.JournalNum;
+            ledgerJournalTrans.AccountType = LedgerJournalACType::Ledger;
+
+            if (!ledgerAccount)
+            {
+                ledgerAccount = LedgerDynamicAccountHelper::getDynamicAccountFromAccountNumber(accountNum, LedgerJournalACType::Ledger);
+            }
+
+            ledgerJournalTrans.LedgerDimension = ledgerAccount;
+            ledgerJournalTrans.OffsetAccountType = ledgerOffsetAccountType;
+            ledgerJournalTrans.OffsetLedgerDimension = ledgerOffsetAccount;
+            ledgerJournalTrans.TransactionType = transactionType;
+            ledgerJournalTrans.BankTransType = bankTransType;
+            ledgerJournalTrans.PaymReference = paymReference;
+            ledgerJournalTrans.Txt = transTxt;
+            ledgerJournalTrans.PaymMode = paymentMode;
+            ledgerJournalTrans.CurrencyCode = curCode;
+            ledgerJournalTrans.ExchRate = exchRate;
+            ledgerJournalTrans.Prepayment = prePay;
+            ledgerJournalTrans.PostingProfile = postingProfile;
+            ledgerJournalTrans.Invoice = InvoiceId;
+            ledgerJournalTrans.Approver = approver;
+            ledgerJournalTrans.Approved = approved;
+            ledgerJournalTrans.Payment = paymTermId;
+
+            if (_amtCurCredit != 0)
+            {
+                ledgerJournalTrans.AmountCurCredit = _amtCurCredit;
+            }
+            if (_amtCurDebit != 0)
+            {
+                ledgerJournalTrans.AmountCurDebit = _amtCurDebit;
+            }
+
+            ledgerJournalTrans.initValue();
+            ledgerJournalTrans.defaultRow();
+
+            ledgerJournalTrans.insert();
+        }
+        else
+        {
+            throw error("@MCR39760");
+        }
+
+        return ledgerJournalTrans;
+    }
+
+    /// <summary>
+    /// Creates a new instance of the <c>MCRLedgerJournal_VendInvoiceRegister</c> class.
+    /// </summary>
+    /// <param name="_ledgerJournalType">
+    /// The type of journal to be used in the instantiation of this class.
+    /// </param>
+    /// <param name="_journalName">
+    /// The name of the journal to be used in the instantiation of this
+    /// class; optional.
+    /// </param>
+    public void new(LedgerJournalType _ledgerJournalType,
+                        LedgerJournalNameId _journalName="")
+    {
+        if (_ledgerJournalType != LedgerJournalType::PurchaseLedger)
+        {
+            throw error (strfmt("@MCR35774",funcName(),
+                enum2str(LedgerJournalType::PurchaseLedger)));
+        }
+        super(_ledgerJournalType,_journalName);
+    }
+
+    protected boolean validateInputLedgerJourTrans(AmountCur _amtCurCredit, AmountCur _amtCurDebit)
+    {
+        boolean ret;
+
+        ret = super(_amtCurCredit, _amtCurDebit);
+
+        if (ret)
+        {
+            if (accountNum == "" && ledgerAccount == 0)
+            {
+                error(strfmt("@MCR35842",LedgerJournalType::PurchaseLedger));
+            }
+        }
+
+        return ret;
+    }
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+    public void AR_CreateInvoiceRegister(PurchId _purchId,InvoiceId _invoiceId)
+    {
+        LedgerJournalTable      jourTable;
+        VENDINVOICEINFOLINE     vendinvoiceinfoline, vendinvoiceinfolineCheckLegalEntity;
+        VendInvoiceInfoTable    vendinvoiceinfotable;
+        ACCOUNTINGDISTRIBUTION  accountDistribution;
+        container               offsetDim;
+        MCRLedgerJournal        journalTable;
+        LedgerJournalTable      ledgerJournalTable;
+        Counter                 recordsInserted;
+        boolean                 flagCheck = false;
+        JournalNameId              journalName;
+        ;
+
+        while select ARBUYINGLEGALENTITY,ISLReceivingLegalEntity from vendinvoiceinfolineCheckLegalEntity 
+            where vendinvoiceinfolineCheckLegalEntity.OrigPurchId == _purchId
+        {
+            if(vendinvoiceinfolineCheckLegalEntity.ARBUYINGLEGALENTITY != vendinvoiceinfolineCheckLegalEntity.ISLReceivingLegalEntity)
+            {
+                flagCheck =true;
+                break;
+            }
+        }
+        if(flagCheck)
+        {
+            journalName =  VendParameters::findByCompany(curExt()).ARJournalName;
+            if(journalName == "")
+                throw error(strFmt("Journal name must be specified in the %1 legal entity.", curExt()));
+
+            //start point of the invoice register creating and posting
+            journalTable = new MCRLedgerJournal_InvoiceRegisterJournal(LedgerJournalType::PurchaseLedger,journalName);
+            ledgerJournalTable = journalTable.createLedgerJournalTable(journalName);
+
+            journalTable.parmLedgerJournalTable(ledgerJournalTable);
+            journalTable.parmMCRCCGeneralLedgerId();
+            journalTable.parmLedgerAccountType(LedgerJournalACType::Ledger);
+            journalTable.parmLedgerOffsetAccountType(LedgerJournalACType::Ledger);
+
+            select firstonly1 vendinvoiceinfotable where vendinvoiceinfotable.PurchId == _purchId && vendinvoiceinfotable.Num == _invoiceId;
+
+            journalTable.parmExchRate(vendinvoiceinfotable.ExchRate);
+            journalTable.parmCurrencyCode(vendinvoiceinfotable.CurrencyCode);
+            journalTable.parmLineNum();
+            journalTable.parmTransDate(vendinvoiceinfotable.TransDate);
+            journalTable.parmDueDate(vendinvoiceinfotable.FixedDueDate);
+            journalTable.parmDocumentDate(vendinvoiceinfotable.DocumentDate);
+            journalTable.parmTransTxt(vendinvoiceinfotable.Description);
+            journalTable.parmInvoice(_invoiceId);       
+            //create the journal trans table
+            while select accountDistribution join vendinvoiceinfoline
+                where accountDistribution.SourceDocumentLine == vendinvoiceinfoline.SourceDocumentLine
+                && vendinvoiceinfoline.OrigPurchId == _purchId
+                && vendinvoiceinfoline.TableRefId == vendinvoiceinfotable.TableRefId
+            {
+                journalTable.parmTaxGroup(vendinvoiceinfoline.TaxGroup);
+                journalTable.parmTaxItemGroup(vendinvoiceinfoline.TaxItemGroup);
+                journalTable.parmLedgerAccount(accountDistribution.LedgerDimension);
+                journalTable.parmledgerOffsetAccount(accountDistribution.LedgerDimension);
+                journalTable.parmDefaultDimension(vendinvoiceinfoline.DefaultDimension);
+                journalTable.parmOffsetCompany(CompanyInfo::findRecId(vendinvoiceinfoline.ISLReceivingLegalEntity).Name);
+            
+                journalTable.createLedgerJournalTrans(accountDistribution.TransactionCurrencyAmount,0,LedgerJournalACType::Ledger);
+
+                // Check and Post only if there is succesful validation.
+            }//end of while
+            if (ledgerJournalTable.RecId)
+            {
+                journalTable.post(ledgerJournalTable);
+                info(strFmt("Vendor Invoice Register Journal %1 has been created and posted.",ledgerJournalTable.JournalNum));
+            }
+        }//end of checking
+    }
