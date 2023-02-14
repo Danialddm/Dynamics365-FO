@@ -1,0 +1,28 @@
+    public void modified()
+    {
+        TrvPayMethod trvPaymethod;
+        FormDataSource trvExptrans_ds;
+        TrvExpTrans trvExptrans;
+
+        next modified();
+        
+        FormControl paymethod = element.control(element.controlId(formControlStr(TrvExpenses,TrvExpTrans_PayMethod)));
+        FormControl vendAcc = element.control(element.controlId(formControlStr(TrvExpenses,ARVendAccountFormString)));
+        
+        trvExptrans_ds = paymethod.dataSourceObject();
+        trvExptrans = trvExptrans_ds.cursor();
+        
+
+        select firstonly1 PostMethod from trvPaymethod
+            where trvPaymethod.PayMethod == paymethod.valueStr();
+
+        vendAcc.visible(trvPaymethod.PostMethod == TrvPostMethod::Vendor);
+        vendAcc.enabled(trvPaymethod.PostMethod == TrvPostMethod::Vendor);
+        
+        if (trvPaymethod.PostMethod != TrvPostMethod::Vendor)
+        {
+            trvExptrans.ARVendAccount =  '';
+        }
+
+        
+    }
