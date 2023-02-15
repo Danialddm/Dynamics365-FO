@@ -1,0 +1,1 @@
+trvPaymethod.OffsetLedgerDimension = LedgerDynamicAccountHelper::getDynamicAccountFromAccountNumber(mytrvExptrans.ARVendAccount, LedgerJournalACType::Vend);
