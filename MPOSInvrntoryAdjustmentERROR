@@ -1,0 +1,15 @@
+EROOR- Number selection is canceled
+- this error is totatlly related to the number sequance and it should be added or changed.
+- for this case the countinous option in the below NS must be turned off.
+------------------------------------------------------------------------------------------
+
+Create and configure a number sequence
+To create and configure a number sequence, follow these steps.
+
+Go to Organization administration > Number sequences > Number sequences.
+On the Number sequences page, create a number sequence.
+In the Number sequence code and Name fields, enter user-defined values.
+On the References FastTab, select Add.
+In the Area field, select Commerce parameters.
+In the Reference field, select Retail document operation identifier.
+On the General FastTab, in the Setup section, set the Continuous option to No to ensure that there are no performance issues.
