@@ -1,3 +1,9 @@
+if you are in the field of datasource method:
+you can use:
+this.query();
+this.cursor();
+instesd of the eventhandler you can use COC
+=========================================================================================
 [ExtensionOf(formDataSourceStr(HcmWorkerActionDetail, ARApplicationBenefits))]
 public static class  ARHcmWorkerActionDetail_Benefits_Extension
 {
