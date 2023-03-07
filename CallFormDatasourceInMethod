@@ -1,0 +1,18 @@
+[ExtensionOf(formDataSourceStr(HcmWorkerActionDetail, ARApplicationBenefits))]
+public static class  ARHcmWorkerActionDetail_Benefits_Extension
+{
+    [FormDataSourceEventHandler(formDataSourceStr(HcmWorkerActionDetail, ARApplicationBenefits), FormDataSourceEventType::QueryExecuting)]
+    public static void ARApplicationCompensation_OnQueryExecuting(FormDataSource sender, FormDataSourceEventArgs e)
+    {
+        HCMWorkerActionHire           actionHire;
+        FormRun formRun= sender.formRun();
+        FormDataSource actionHire_ds = formRun.datasource(FormDatasourceStr(HcmWorkerActionDetail,HCMWorkerActionHire));
+        actionHire = actionHire_ds.Cursor();
+
+        
+        QueryBuildDataSource actionHireeQueryRunQbds = sender.query().dataSourceTable(tableNum(ARApplicationBenefits));
+        actionHireeQueryRunQbds.addRange(fieldnum(ARApplicationBenefits, APPLICATIONRECID)).value(int642Str(actionHire.Application));
+
+    }
+
+}
