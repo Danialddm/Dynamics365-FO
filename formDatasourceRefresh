@@ -1,0 +1,35 @@
+2. Refresh
+This method basically refreshes the data displayed in the form controls with whatever is stored in the form cache for that particular datasource record. Calling refresh() method will NOT reread the record from the database. So if changes happened to the record in another process, these will not be shown after executing refresh().
+
+refreshEx
+Does a redraw of the grid rows, depending on the optional argment for specifying the number of the record to refresh (and this means the actual row number in the grid, which is less useful for AX devs). Special argument values include -1, which means that all records will be redrawn, and -2, which redraws all marked records and records with displayOptions. Default argument value is -2.
+This method should be used sparingly, in cases where multiple rows from the grid are updated, resulting in changes in their displayOptions, as an example. So you should avoid using it as a replacement for refresh(), since they actually have completely different implementations in the kernel.
+Also, note, that refreshEx() only redraws the grid, so the controls not in the grid might still contain outdated values. Refresh() updates everything, since this is its intention.
+
+3. Reread
+Calling reread() will query the database and re-read the current record contents into the datasource form cache. This will not display the changes on the form until a redraw of the grid contents happens (for example, when you navigate away from the row or re-open the form).
+You should not use it to refresh the form data if you have through code added or removed records. For this, you would use a different method described below.
+
+How are these 2 methods commonly used?
+Usually, when you change some values in the current record through some code (for example, when the user clicks on a button), and update the database by calling update method on the table buffer, you would want to show the user the changes that happened.
+In this case, you would call reread() method to update the datasource form cache with the values from the database (this will not update the screen), and then call refresh() to actually redraw the grid and show the changes to the user.
+
+Clicking buttons with SaveRecord == Yes
+Each button has a property SaveRecord, which is by default set to Yes. Whenever you click a button, the changes you have done in the current record are saved to the database. So calling reread will not restore the original record values, as some expect. If that is the user expectation, you as a developer should set the property to No.
+
+4. Research
+Calling research() will rerun the existing form query against the database, therefore updating the list with new/removed records as well as updating all existing rows. This will honor any existing filters and sorting on the form, that were set by the user.
+
+Research(true)
+The research method starting with AX 2009 accepts an optional boolean argument _retainPosition. If you call research(true), the cursor position in the grid will be preserved after the data has been refreshed. This is an extremely useful addition, which solves most of the problems with cursor positioning (findRecord method is the alternative, but this method is very slow).
+
+5. ExecuteQuery
+Calling executeQuery() will also rerun the query and update/add/delete the rows in the grid. The difference in behavior from research is described below.
+ExecuteQuery should be used if you have modified the query in your code and need to refresh the form to display the data based on the updated query.
+
+formDataSource.queryRun().query() vs formDataSource.query()
+An important thing to mention here is that the form has 2 instances of the query object - one is the original datasource query (stored in formDataSource.query()), and the other is the currently used query with any user filters applied (stored in formDataSource.queryRun().query()).
+When the research method is called, a new instance of the queryRun is created, using the formDataSource.queryRun().query() as the basis. Therefore, if the user has set up some filters on the displayed data, those will be preserved.
+This is useful, for example, when multiple users work with a certain form, each user has his own filters set up for displaying only relevant data, and rows get inserted into the underlying table externally (for example, through AIF).
+Calling executeQuery, on the other hand, will use the original query as the basis, therefore removing any user filters.
+This is a distinction that everyone should understand when using research/executeQuery methods in order to prevent possible collisions with the user filters when updating the query.
