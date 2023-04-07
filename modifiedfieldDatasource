@@ -9,9 +9,12 @@
         FormControl paymethod = element.control(element.controlId(formControlStr(TrvExpenses,TrvExpTrans_PayMethod)));
         FormControl vendAcc = element.control(element.controlId(formControlStr(TrvExpenses,ARVendAccountFormString)));
         
-        @@@@@@@@@@Or if you are in the form@@@@@@@@@@@@
+        @@@@@@@@@@ Or if you are in the form @@@@@@@@@@@@
         FormGroupControl arDefaultPO = this.design().controlName(formControlStr(PurchCreateOrder,ARArtal));
-        @@@@@@@@@@@@@@@@
+        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        @@@@@@@@@@ Or if you are in the form datasource @@@@@@@@@@@
+         purchTable = this.cursor();
+         @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         
         trvExptrans_ds = paymethod.dataSourceObject();
         trvExptrans = trvExptrans_ds.cursor();
