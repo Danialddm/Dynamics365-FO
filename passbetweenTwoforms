@@ -1,0 +1,26 @@
+     /// <summary>
+    /// Performs a lookup for the <c>Relationship</c> field.
+    /// </summary>
+    /// <param name="_formControl">
+    /// The <c>FormStringControl</c> instance for which the lookup is being performed.
+    /// </param>
+    /// <param name="_caller">
+    /// The calling object to pass to the lookup form.
+    /// </param>
+    /// <param name="_record">
+    /// The record to pass to the lookup form.
+    /// </param>
+    public static void lookupRelationshipType(FormStringControl _formControl, Object _caller, Common _record)
+    {
+        FormRun formRun;
+        Args args;
+
+        args = new Args(formStr(HcmRelationshipTypeLookup));
+        args.caller(_caller);
+        args.parm(_caller.name());
+        args.record(_record);
+
+        formRun = ClassFactory::formRunClassOnClient(args);
+        formRun.init();
+        _formControl.performFormLookup(formRun);
+    }
