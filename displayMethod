@@ -1,10 +1,11 @@
 @@@@ you can add in on table as well. depends on your request @@@
-
 [ExtensionOf(formDataSourceStr(CaseDetail, CaseDetailBase))]
 final class ARDisplayMethodFinalApproverName_Extension
 {
     private WorkflowTrackingStatusTable _WorkflowTrackingStatusTable;
     private WORKFLOWTRACKINGTABLE _WORKFLOWTRACKINGTABLE;
+    
+    [SysClientCacheDataMethodAttribute(true)] // for caching method
     display ApprovedByName approverName(CaseDetailBase _CaseDetailBase)
     {
         select Document,RecId from _WorkflowTrackingStatusTable
