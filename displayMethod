@@ -1,0 +1,22 @@
+@@@@ you can add in on table as well. depends on your request @@@
+
+[ExtensionOf(formDataSourceStr(CaseDetail, CaseDetailBase))]
+final class ARDisplayMethodFinalApproverName_Extension
+{
+    private WorkflowTrackingStatusTable _WorkflowTrackingStatusTable;
+    private WORKFLOWTRACKINGTABLE _WORKFLOWTRACKINGTABLE;
+    display ApprovedByName approverName(CaseDetailBase _CaseDetailBase)
+    {
+        select Document,RecId from _WorkflowTrackingStatusTable
+            where _WorkflowTrackingStatusTable.Document like "*" + CaseDetailBase::findRec(_CaseDetailBase.RecId).CaseId + "*";
+        
+        select WorkflowTrackingStatusTable,TrackingType,TrackingContext,User from  _WORKFLOWTRACKINGTABLE 
+            order by _WORKFLOWTRACKINGTABLE.CreatedDateTime desc
+            where _WORKFLOWTRACKINGTABLE.WorkflowTrackingStatusTable == _WorkflowTrackingStatusTable.RecId
+            && _WORKFLOWTRACKINGTABLE.TrackingType == WorkflowTrackingType::Completion
+            && _WORKFLOWTRACKINGTABLE.TrackingContext == WorkflowTrackingContext::WorkItem;
+
+        return xUserInfo::find(false,_WORKFLOWTRACKINGTABLE.User).name;
+    }
+
+}
