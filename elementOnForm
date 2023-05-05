@@ -1,0 +1,8 @@
+element on the form = (FormRun formRun = sender.formRun();)
+
+ex1:
+formRun.design().controlName(formControlStr(RetailInventItemLabelReportSetup, RBOInventItemLabelReportSetup_ReportName)))
+
+ex2:
+FormDataSource RetailInventItemLabelReportSetup_ds = formRun.dataSource(formDataSourceStr(RetailInventItemLabelReportSetup,RetailInventItemLabelReportSetup));
+
