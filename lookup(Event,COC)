@@ -1,0 +1,58 @@
+class TutorialCustTable_Form_Handler
+{
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    [FormControlEventHandler(formControlStr(CustTable, Posting_CustGroup), FormControlEventType::Lookup)]
+    public static void Posting_CustGroup_OnLookup(FormControl sender, FormControlEventArgs e)
+    {
+        SysTableLookup      sysTableLookup  = SysTableLookup::newParameters(tableNum(CustGroup), sender);
+        
+        // Add the lookup columns
+        sysTableLookup.addLookupfield(fieldNum(CustGroup, CustGroup));
+        sysTableLookup.addLookupfield(fieldNum(CustGroup, Name));
+        sysTableLookup.addLookupfield(fieldNum(CustGroup, PaymTermId));
+
+        // Run the lookup
+        sysTableLookup.performFormLookup();
+
+        //cancel the call to super() to prevent the system from trying to show 
+        //the lookup form twice and cause an error.
+        // avoid running the base lookup
+        FormControlCancelableSuperEventArgs cancelableSuperEventArgs = e as FormControlCancelableSuperEventArgs;
+        cancelableSuperEventArgs.CancelSuperCall();
+    }
+}
+
+@@@@@@@ important tip@@@@@@@@
+we also need to cancel the original base lookup method. 
+To do this, call the method ‘CancelSuperCall()’ in the lookup code. See the complete code below.
+
+###################################### CoC #########################################################
+tip: we must override init() and lookup together in coc in form level to override lookup in datasource field or form field
+
+[ExtensionOf(formStr(CustTable))]
+final class TutorialCustTable_Form_Extension
+{
+    public void init()
+    {
+        next init();
+
+        Posting_CustGroup.registerOverrideMethod(methodStr(FormDataObject, lookup), formMethodStr(CustTable, overridenCustGroupLookup));
+    }
+
+    public void overridenCustGroupLookup(FormStringControl _formControl)
+    {
+        SysTableLookup      sysTableLookup  = SysTableLookup::newParameters(tableNum(CustGroup), _formControl);
+
+        // Add the lookup columns
+        sysTableLookup.addLookupfield(fieldNum(CustGroup, CustGroup));
+        sysTableLookup.addLookupfield(fieldNum(CustGroup, Name));
+        sysTableLookup.addLookupfield(fieldNum(CustGroup, PaymTermId));
+
+        // Run the lookup
+        sysTableLookup.performFormLookup();
+    }
+}
