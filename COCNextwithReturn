@@ -1,0 +1,10 @@
+    protected PurchPurchaseOrderHeader initializePurchaseOrderHeader(VendPurchOrderJour _vendPurchOrderJour)
+    {
+        PurchPurchaseOrderHeader purchPurchaseorderheader;
+        PurchTable purchTable;
+        ;
+        purchPurchaseorderheader   = next initializePurchaseOrderHeader(_vendPurchOrderJour);
+        purchTable              = PurchTable::find(_vendPurchOrderJour.PurchaseOrderId);
+        purchPurchaseorderheader.ARIsArtalPO = purchTable.ARArtalPO;
+        return purchPurchaseOrderHeader;
+    }
