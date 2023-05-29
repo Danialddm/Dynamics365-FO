@@ -1,0 +1,41 @@
+public static Name getSize(VendPackingSlipTrans _vendPackingsliptrans)
+    {
+        EcoResProductMasterSize ecoResProductMasterSize;
+        ;
+        select ecoResProductMasterSize
+            where ecoResProductMasterSize.Size == EcoResSize::findByName(InventDim::find(InventTrans::findByInventTransOrigin
+                        (InventTransOrigin::findByInventTransId
+                        (_vendPackingsliptrans.InventTransId).RecId).inventDimId).InventSizeId).RecId
+            && ecoResProductMasterSize.SizeProductMaster == inventTable::find(_vendPackingsliptrans.ItemId).Product
+            && ecoResProductMasterSize.SizeProductDimensionAttribute == EcoResProductDimensionAttribute::inventDimFieldId2DimensionAttributeRecId(fieldNum(InventDim, InventSizeId));
+            
+        return EcoResProductMasterDimValueTranslation::findByProductMasterDimValLanguage(ecoResProductMasterSize.RecId, 'en-us').Name;
+    }
+-----------------------------
+    public static Name getColor(VendPackingSlipTrans _vendPackingsliptrans)
+    {
+        EcoResProductMasterColor ecoResProductMasterColor;
+        ;
+        select ecoResProductMasterColor
+            where ecoResProductMasterColor.Color == EcoResColor::findByName(InventDim::find(InventTrans::findByInventTransOrigin
+                        (InventTransOrigin::findByInventTransId
+                        (_vendPackingsliptrans.InventTransId).RecId).inventDimId).InventColorId).RecId
+            && ecoResProductMasterColor.ColorProductMaster == inventTable::find(_vendPackingsliptrans.ItemId).Product
+            && ecoResProductMasterColor.ColorProductDimensionAttribute == EcoResProductDimensionAttribute::inventDimFieldId2DimensionAttributeRecId(fieldNum(InventDim, InventColorId));
+            
+        return EcoResProductMasterDimValueTranslation::findByProductMasterDimValLanguage(ecoResProductMasterColor.RecId, 'en-us').Name;
+    }
+------------------------------------
+    public static Name getStyle(VendPackingSlipTrans _vendPackingsliptrans)
+    {
+        EcoResProductMasterstyle ecoResProductMasterStyle;
+        ;
+        select ecoResProductMasterStyle
+            where ecoResProductMasterStyle.Style == EcoResStyle::findByName(InventDim::find(InventTrans::findByInventTransOrigin
+                        (InventTransOrigin::findByInventTransId
+                        (_vendPackingsliptrans.InventTransId).RecId).inventDimId).InventStyleId).RecId
+            && ecoResProductMasterStyle.StyleProductMaster == inventTable::find(_vendPackingsliptrans.ItemId).Product
+            && ecoResProductMasterStyle.StyleProductDimensionAttribute == EcoResProductDimensionAttribute::inventDimFieldId2DimensionAttributeRecId(fieldNum(InventDim, InventStyleId));
+            
+        return EcoResProductMasterDimValueTranslation::findByProductMasterDimValLanguage(ecoResProductMasterStyle.RecId, 'en-us').Name;
+    }
