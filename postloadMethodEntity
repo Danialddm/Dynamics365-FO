@@ -1,0 +1,12 @@
+The PostLoad() method will be executed every time the data is loaded.
+
+[ExtensionOf(tableStr(ARPurchReqTableEntity))]
+final class ARPurchReqTableEntity_Extension
+{
+    public void postLoad()
+    {
+        next postLoad();
+        this.ARTableId = tableNum(PurchReqTable);
+    }
+
+}
