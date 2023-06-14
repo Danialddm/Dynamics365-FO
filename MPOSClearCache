@@ -1,0 +1,18 @@
+ 
+
+When changing some setup in HQ and pushing the changes down to the stores, something this change is not visible immediately.
+
+This is because that value is cached either on the POS side, or even on the CSU.
+
+ 
+
+For mPOS, we can refresh the cache by following the steps I’ve shared with you earlier today:
+
+Close the shift
+Close the app
+Closs the dllhost.exe under task manager.
+ 
+
+This should clear any cached values on the POS side.
+
+For CSU (retail server), unfortunately, we don’t have such a way for clearing the cache, and we can only wait, or, for urgent cases, you can restart the CSU from LCS, but that implies a bit of downtime for the stores and users.
