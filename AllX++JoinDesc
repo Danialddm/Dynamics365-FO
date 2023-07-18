@@ -1,0 +1,4 @@
+InnerJoin - creates INNER or CROSS JOIN
+OuterJoin - creates LEFT JOIN
+ExistsJoin - creates WHERE EXISTS (...)
+NotExistsJoin - creates WHERE NOT EXISTS (...)
