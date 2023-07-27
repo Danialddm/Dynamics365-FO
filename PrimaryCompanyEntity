@@ -1,0 +1,3 @@
+Check the value of 'Primary company context' in the entity. By default, it is set to 'DataAreaId'. 
+This means the data will be exported specific to the company. 
+Clear the value from this property if the requirement is to export data from all the legal entities in a single execution.
