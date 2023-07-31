@@ -1,0 +1,14 @@
+//this way is filterable in postman that the postload method
+//unmapped fiedl
+// use the dataentityviewmethod in the entity props
+private static str getAccountNumber()
+    {
+        TableName   viewName        = tableStr(RetailTransactionPaymentLineV2Entity);
+        str         storeTenderTypeFunction  = SysComputedColumn::returnField(viewName, identifierStr(RetailStoreTenderTypeTable), fieldStr(RetailStoreTenderTypeTable, Function));
+        str         cardOrAccount    = SysComputedColumn::returnField(viewName, identifierStr(RetailTransactionPaymentTrans), fieldStr(RetailTransactionPaymentTrans, cardOrAccount));
+
+        return SysComputedColumn::if(SysComputedColumn::equalExpression(storeTenderTypeFunction,
+            SysComputedColumn::returnLiteral(RetailTenderFunction::Customer)),
+            cardOrAccount,
+            SysComputedColumn::nullExpression());
+    }
