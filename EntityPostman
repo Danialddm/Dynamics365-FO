@@ -1,1 +1,6 @@
+Entity key:
+It is so importamt for update(Patch) the entity for selecting only one record.
+Filter Url:
 https://arfnodev08e443775586d4552ddevaos.axcloud.dynamics.com/data/RetailAssortmentProductVariants?$filter=ProductId eq '100000001'&cross-company=true
+Update Url:
+https://arfnodev08e443775586d4552ddevaos.axcloud.dynamics.com/data/ARCalendars(RecId1=5637696576)?cross-company=true
