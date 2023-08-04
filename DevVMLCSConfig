@@ -1,0 +1,21 @@
+Good morning Danial,
+
+ 
+
+Thank you for your time in our meeting this morning.
+
+ 
+
+After restoring a DB from a Sandbox to a Onebox environment, RetailServer needs to be retargeted to have configuration values pointing to the target environment (Your DEV box).
+
+ 
+
+Go to LCS Shared asset library -- Microsoft Dynamics Lifecycle Services
+
+And apply the Environment Reprovisioning Tool to your DEV box, as it’s shown below in the screen.
+
+ 
+
+ 
+
+Note: If you’d come across any issues with this old environment my suggestion is to deploy a fresh DEV box on the same version as PROD (10.0.34) and continue from there (Move DB, Retarget environment).
