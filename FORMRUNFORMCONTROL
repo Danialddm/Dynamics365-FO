@@ -1,0 +1,88 @@
+D365 Get FormRun in Form Event Handlers methods
+GET FORMRUN FROM FORMDATASOURCE
+
+
+[FormDataSourceEventHandler(formDataSourceStr(MyForm, MyRandomTableDS), FormDataSourceEventType::Written)]
+public static void MyRandomTableDS_OnWritten(FormDataSource sender, FormDataSourceEventArgs e)
+{
+    FormRun formRun = sender.formRun() as FormRun;
+    // you can even call custom methods (Here IntelliSense won’t work though)
+    formRun.myCustomMethod();
+}
+
+GET FORMRUN FROM FORM
+
+[PostHandlerFor(formStr(SalesEditLines), formMethodStr(SalesEditLines, closeOk))]
+    public static void SalesEditLines_Post_closeOk(XppPrePostArgs args)
+    {
+        FormRun sender = args.getThis();
+        SalesParmUpdate salesParmUpdate;
+        salesParmUpdate = sender.dataSource(formdatasourcestr(SalesEditLines, SalesParmUpdate)).cursor();
+
+        info(salesParmUpdate.ParmId);
+    }
+
+[PostHandlerFor(formStr(FormName), formMethodStr(FormName, init))]
+public static void FormName_Post_init(XppPrePostArgs _args)
+{
+FormRun form = _args.getThis();
+FormDesign design = form.design();
+FormControl variableName = design.controlName(formControlStr(FormName, controlName));
+FormControl variableName = design.controlName(formControlStr(FormName, controlName));
+}
+
+[FormEventHandler(formStr(TSExtensionInstanceTest), FormEventType::Initialized)]
+public static void TSExtensionInstanceTest_OnInitialized(xFormRun sender, FormEventArgs e)
+{
+FormRun formRun = sender as FormRun;
+TSExtensionInstanceTestHandler extensionInstance = formRun.getExtensionInstance(classStr(TSExtensionInstanceTestHandler));
+extensionInstance.init();
+}
+
+[FormEventHandler(formStr(FormName), FormEventType::Closing)]
+public static void FormNamee_OnClosing(xFormRun sender, FormEventArgs e)
+{
+FormDataSource datasource_ds = sender.dataSource(formDataSourceStr(FormName, DataSourceName));
+TableName buffTable = datasource_ds.cursor();
+}
+
+[FormDataFieldEventHandler(formDataFieldStr(TrvRequisition, TrvRequisitionLine, Category),
+FormDataFieldEventType::Modified)]
+public static void Category_OnModified(FormDataObject sender, FormDataFieldEventArgs e)
+{
+
+    FormDataSource              trvRequisitionLine_DS;
+    TrvRequisitionTable         requisitionTable;
+    TrvRequisitionLine          requisitionLine;
+    ormReferenceGroupControl    formControlLocationDetail;
+    //Get datasouce
+    trvRequisitionLine_DS = sender.datasource();
+
+    //Get the formRun
+    formRun = TrvRequisitionLine_DS.formRun();
+
+    //Get currently selected record
+    requisitionLine = trvRequisitionLine_DS.cursor();
+
+    //Get any other datasouce you want form form with help of relation
+    requisitionTable = TrvRequisitionTable::find(requisitionLine.TrvRequisitionTable);
+
+    //Set any value of record field value based on your calculation
+    requisitionLine.AccountingCurrencyAmount = 0;//TODO::Some calculations you need to do and set value of amount
+
+    //Change state of any control on form
+    formControlLocationDetail = 
+    formRun.design().controlName(formControlStr(TrvRequisition,PerdiemTrvLocations_Details));
+
+    formControlLocationDetail.mandatory(false);
+    formControlLocationDetail.enabled(false);
+
+}
+GET FORMRUN FROM FORM CONTROL
+
+REPORT THIS AD
+[FormControlEventHandler(formControlStr(TSExtensionInstanceTest, Counter), FormControlEventType::Clicked)]
+public static void Toggle_OnClicked(FormControl sender, FormControlEventArgs e)
+{
+FormRun formRun = sender.formRun();
+}
