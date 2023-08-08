@@ -1,1 +1,2 @@
-https://arfnodev08e443775586d4552ddevaos.axcloud.dynamics.com/soap/services/RetailCDXRealTimeService
+https://arfnodev08e443775586d4552ddevaos.axcloud.dynamics.com/soap/services/RetailCDXRealTimeService--check CDX
+https://arfnodev08e443775586d4552ddevret.axcloud.dynamics.com/healthcheck?testname=ping -- check db and realtime service
