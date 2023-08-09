@@ -1,0 +1,13 @@
+https://arfnodev08e443775586d4552ddevaos.axcloud.dynamics.com/soap/services/RetailCDXRealTimeService--check CDX
+https://arfnodev08e443775586d4552ddevret.axcloud.dynamics.com/healthcheck?testname=ping -- check db and realtime service
+
+///////////////
+If the DB backup came from a different tenant then try these steps:
+
+On DevBox environment, open a PowerShell window – without elevated rights – 
+change directory and enter the following commands to run Retail Tenant Update tool (Do not use the link on the Desktop this time), 
+with the tenant user you’re activating POS with.
+
+PS K:\temp> cd \RetailSDK\Tools\
+
+PS K:\RetailSDK\Tools> .\RetailTenantUpdateTool.ps1
