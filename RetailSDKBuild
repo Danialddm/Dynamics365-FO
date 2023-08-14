@@ -1,0 +1,8 @@
+To buid RetailSDK and generate a retail deployable package:
+1- the command is as follows:
+E:\myRetailSDK\RetailSDKUpdate2023-08-05>MSBuild /p:CheckVS2017Installed=false /p:CheckVSDependencies=false /p:Configuration=Release
+
+2- dll must be in Refrence folder
+3- config.Ext file must be in a asset file
+4- webconfig must be changed based on your config file in retailserver folder of the packages in retailSDK folder.
+5- 
