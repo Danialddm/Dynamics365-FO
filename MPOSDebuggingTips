@@ -1,0 +1,6 @@
+1- check the soloution and project in Debug status in properties.
+2- when you want to add a process uset the automatic option for selecting the process
+3- The memory window is not required when debugging is activated.
+4- check the all symboles in options if the visual studio
+5- first time, it needs more time to load all symboles(more than 4 mins)
+6- For retail server, ensure that it is started and has PID in processes.
