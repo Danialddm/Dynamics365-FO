@@ -21,3 +21,11 @@ final class ARDisplayMethodFinalApproverName_Extension
     }
 
 }
+#########################################################################
+- display method on custom form in datasource level
+
+        [SysClientCacheDataMethodAttribute(true)]
+        public display real onHandCalc(InventWarehouseOnHandAggregatedView _OnHandAggregatedView)//datasiurce of the form
+        {
+            return _OnHandAggregatedView.AvailableOnHandQuantity;
+        }
