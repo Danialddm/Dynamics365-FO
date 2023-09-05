@@ -1,0 +1,5 @@
+@@@@@@this is veryyyyyyyyyyyyyyyy important@@@@@@@@@@@
+CRT extension code should not refer to or use any of the CRT business logic classes, methods, 
+or handlers (such as classes from Runtime.Workflow, Runtime.Services, or Runtime.DataServices). 
+Because these classes aren't backward compatible, extensions could be broken during an upgrade. 
+Extensions should use only request, response, and entity classes from Runtime.*.Messages, Runtime.Framework, Runtime.Data, and Runtime.Entities.
