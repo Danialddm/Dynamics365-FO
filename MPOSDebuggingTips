@@ -4,3 +4,5 @@
 4- check the all symboles in options if the visual studio
 5- first time, it needs more time to load all symboles(more than 4 mins)
 6- For retail server, ensure that it is started and has PID in processes.
+7- try to start the retail server first, before starting the AOS service(for catestrophic error while debugging).
+8- check the full access for all folders in K drive such as retail server, AOS service, RetailSDk and ... .
