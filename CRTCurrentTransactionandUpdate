@@ -1,0 +1,13 @@
+//in suspendCartRequest trigger class//
+public async Task OnExecuting(Request request)
+            {
+                SuspendCartRequest suspendCartRequest = request as SuspendCartRequest;
+                var getCartServiceRequest = new GetCartServiceRequest(new CartSearchCriteria(suspendCartRequest.CartId), QueryResultSettings.SingleRecord);
+                var cartResponse = await request.RequestContext.ExecuteAsync<GetCartServiceResponse>(getCartServiceRequest).ConfigureAwait(false);
+                Cart cart = cartResponse.Carts.Single();
+                cart.IsSuspended = true;
+                var saveCartRequest = new SaveCartRequest(cart);
+                await request.RequestContext.ExecuteAsync<SaveCartResponse>(saveCartRequest).ConfigureAwait(false);
+
+                //await Task.CompletedTask;
+            }    
