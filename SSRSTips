@@ -1,0 +1,27 @@
+1.Report Data Provider (RDP) Class 
+RDP class is an x++ class that is used to access and process data for an SSRS report. The RDP class processes the business logic based on a specified parameter and/or query and returns a dataset to the reporting services. 
+
+In order to create an RDP class; you have to extend that class with SRSReportDataProviderBase. This tells AX || 365FO that this class will be used by reporting services to process the data. Two important attributes are used in RDP classes: 
+
+1. SRSReportQueryAttribute:
+
+It specifies which AOT query will be used in this report. If the RDP class uses an AOT query to process data, define this attribute at the beginning of the class.
+
+ 2. SRSReportParameterAttribute: 
+
+It defines the data contract class that will be used by this report to prompt for parameter values. If the RDP class contains any parameters then defines this attribute at the beginning of the class. 
+
+Both the attributes are optional. If the report does not use any query or does not want any parameter to filter report data, these attributes do not need to be used.
+
+2. Data Contract Class
+ A data contract class is an x++ class that contains parm methods with the DataMemberAttribute defined at the beginning of the method. This class is used to define one or more parameters that will be used in an SSRS report. 
+
+3. Table 
+A table is used as the dataset to store data for the report. The RDP class processes the data and stores it in the table which is then used by an SSRS report to render data.
+
+ A table can be a temporary table (InMemory or TempDB) or a regular table, but it is Microsoft best practice to use a temporary table. The type of temporary table is based upon performance considerations. InMemory temporary table is used when the data set is small, while TempDB is normally used for larger datasets to improve performance
+
+Let start developing our first SSRS report
+Now create a contract class, which is responsible for setting and getting the data in which use the fields to set parameters in the form to get the condition from the user.
+
+Like in the below contract class; we define two fields of Str type (String type)ItemId and DataAreaId and define the setter and getter function for the fields; one thing to remember is to mention the “DataContractAttribute” which differentiates the Contract Class from other classes.
