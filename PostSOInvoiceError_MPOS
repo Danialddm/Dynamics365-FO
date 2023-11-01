@@ -1,0 +1,8 @@
+To invoice so from mpos, it may have the following error:
+
+-- Dimension '...(customer,location,department)' is different document marked for settelment.
+-- there was a sale/purchase book control vilolation.
+
+You should search the above error texts in the labels to find the proper class.
+
+As a workaround, you should log-in to the mpos with worker of the current legal entity who is employment of that legal entity.
