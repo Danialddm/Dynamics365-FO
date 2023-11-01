@@ -1,0 +1,9 @@
+- In Microsoft Visual Studio, build your MPOS extension package project.
+
+- Deploy your MPOS extension package. In Solution Explorer, select and hold (or right-click) the MPOS .jsproj file, and then select Deploy.
+
+- Open POS so that the debugger is attached:
+
+On the Debug menu, select Other Debug Targets > Debug Installed App Package.
+Search for and select Commerce Modern POS.
+Select Start to open the app.
