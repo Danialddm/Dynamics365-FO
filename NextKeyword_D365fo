@@ -1,0 +1,3 @@
+The next keyword behaves like a super, and it will define when your extended logic executes. The next call after your code behaves like a Pre-event handler, 
+your logic executes first, and later on, the logic residing in the original method gets executed. 
+The next call before your code behaves like a Post event handler, your logic executes after the code residing in the original method gets executed.
