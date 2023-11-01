@@ -1,0 +1,51 @@
+ try
+    {
+        ttsbegin;
+
+        // do stuff here
+     
+        ttsCommit;
+    }
+    catch (Exception::Deadlock)
+    {
+        // retry on deadlock
+        retry;
+    }
+    catch (Exception::UpdateConflict)
+    {
+        // try to resolve update conflict
+        if (appl.ttsLevel() == 0)
+        {
+            if (xSession::currentRetryCount() >= #RetryNum)
+            {
+                throw Exception::UpdateConflictNotRecovered;
+            }
+            else
+            {
+                retry;
+            }
+        }
+        else
+        {
+            throw Exception::UpdateConflict;
+        }
+    }
+    catch(Exception::DuplicateKeyException)
+    {
+        // retry in case of an duplicate key conflict
+        if (appl.ttsLevel() == 0)
+        {
+            if (xSession::currentRetryCount() >= #RetryNum)
+            {
+                throw Exception::DuplicateKeyExceptionNotRecovered;
+            }
+            else
+            {
+                retry;
+            }
+        }
+        else
+        {
+            throw Exception::DuplicateKeyException;
+        }
+    }
