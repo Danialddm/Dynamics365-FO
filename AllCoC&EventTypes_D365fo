@@ -1,0 +1,230 @@
+[ExtensionOf(ObjectName)] on the class header.
+
+ü For Class COC we use                            
+
+[ExtensionOf(classStr(ClassName))]
+
+ü For Form COC we use                            
+
+[ExtensionOf(formStr(FormName))]
+
+ü For FormControl COC we use        
+
+[ExtensionOf(formControlStr(FormName,FormControlName))]
+
+ü For FormDataSource COC we use    
+
+[ExtensionOf(formDatasourceStr(FormName,FormDSName))]
+
+ü For FormDataFieldStr COC we use    
+
+[ExtensionOf(formDataFieldStr(FormName,FormDSName,Field))]
+
+ü For Table COC we use                          
+
+[ExtensionOf(tableStr(TableName))]
+
+ü For Data Entity COC we use                
+
+[ExtensionOf(tableStr(DataEntityName))]
+
+====================================================================================
+COC for Form Data Field:
+[ExtensionOf(formDataFieldStr(SalesTable, SalesLine, ItemId))]
+ final class SalesTable_SalesLineItemId_Extension
+ {
+ public void modified()
+{
+FormDataObject formDataObject = any2Object(this) as FormDataObject; FormDataSource formDataSource = formDataObject.datasource(); SalesLine salesLine; next modified(); salesLine = formDataSource.cursor(); salesLine.Name = InventTable::find(salesLine.ItemId).itemName();
+ }
+ }
+Event handler for Form Data Field:
+[FormDataFieldEventHandler(formDataFieldStr(SalesTable, SalesLine, ItemId), FormDataFieldEventType::Modified)]
+public static void ItemId_OnModified(FormDataObject sender, FormDataFieldEventArgs e)
+{
+FormRun formRun = sender.datasource().formRun(); 
+SalesLine salesLine = formRun.dataSource(formdatasourcestr(SalesTable, SalesLine)).cursor();
+formRun = sender.datasource().formRun();
+}
+---
+COC for Form Datasource:
+
+[ExtensionOf(formDatasourcestr(SalesTableListPage,SalesTable))]
+final class TM_SalesTable_DataSource_Extension
+{
+    public int active()
+    {
+        int ret = next active();   
+        SalesTable SalesTable_ds = this.cursor();
+        if(SalesTable_ds.SalesStatus == SalesStatus::Invoiced)
+        {
+            this.formRun().design().controlName(formControlStr(SalesTableListPage,FormButtonControl1)).enabled(true);
+        }
+        else
+        {
+            this.formRun().design().controlName(formControlStr(SalesTableListPage,FormButtonControl1)).enabled(false);
+        }
+        return  ret;
+    }
+}
+---
+Event handler for Form Datasource:
+
+[FormDataSourceEventHandler(formDataSourceStr(SalesTableListPage, SalesTable), FormDataSourceEventType::Activated)]
+    public static void SalesTable_OnActivated(FormDataSource sender, FormDataSourceEventArgs e)
+    {
+        SalesTable SalesTable = sender.cursor() as SalesTable;
+FormRun element = sender.formRun();
+FormCheckBoxControl SalesTable_TMCreditLimitChecked = element.design(0).controlName("SalesTable_TMCreditLimitChecked");
+FormCheckBoxControl SalesTable_TMCreditLimitExceeded = element.design(0).controlName("SalesTable_TMCreditLimitExceeded");
+FormMenuButtonControl WorkflowActionBarButtonGroup = element.design().controlName("WorkflowActionBarButtonGroup");
+        if(SalesTable.SalesStatus == SalesStatus::Invoiced)
+        {
+            sender.formRun().design().controlName(formControlStr(SalesTableListPage,FormButtonControl1)).enabled(true);
+        }
+        else
+        {
+            sender.formRun().design().controlName(formControlStr(SalesTableListPage,FormButtonControl1)).enabled(false);
+        }
+    }
+-----
+ COC for Form:
+[ExtensionOf(formStr(SalesTable))]
+final class TM_SalesTable_Form_Extension
+{
+	public void init()
+{
+FormRun formRun = this as  FormRun;
+FormDataSource SalesTable_DS =formRun.datasource(FormDatasourceStr(SalesTable,SalesTable));
+SalesTable _salestable = SalesTable_DS.Cursor();
+
+FormControl custAccount = formRun.design().ControlName(FormControlStr(SalesTable,SalesLine_itemid));
+next init();  
+}
+}
+---------
+Event handler for Form:
+
+[PostHandlerFor(formStr(SalesTable), formMethodStr(SalesTable, init))]
+public static void SalesTable_Post_init(XppPrePostArgs args)
+
+{    
+        FormRun form = _args.getThis();
+        FormDesign design = form.design();
+        FormControl itemid = design.controlName(formControlStr(SalesLine, Salesline_itemid));
+}
+---------
+COC for Form Control:
+
+[ExtensionOf(formcontrolstr(SalesTableListPage,buttonUpdateInvoice))]
+final class TM_SalesTableListPage_Control_Extension
+{	
+public void clicked()
+{
+FormButtonControl _ FormButtonControl= any2Object(this) as FormButtonControl;
+FormDataSource salestable_DS = FormButtonControl.FormRun().Datasouce(tableStr(SalesTable));
+SalesTable _salestable = salestable_DS.cursor();
+UserGroupList UserGroupList;
+UserId userId = curUserId();
+select * from UserGroupList where UserGroupList.groupId == "Post" && UserGroupList.userId == userId;
+if(!UserGroupList)
+{
+throw Error("User not allowed to generate Invoice");        }
+}
+next clicked();
+}
+}
+---------
+Event handler for Form Control:
+
+[FormControlEventHandler(formControlStr(SalesTableListPage, buttonUpdateInvoice), FormControlEventType::Clicked)]
+public static void buttonUpdateInvoice_OnClicked(FormControl sender, FormControlEventArgs e)
+{     
+Args args = new Args();
+        FormCommandButtonControl  callerButton = sender as   FormCommandButtonControl;  
+        FormRun form = callerButton.formRun();
+FormDataSource SalesTable_ds = form.dataSource(formDataSourceStr(SalesTableListPage, SalesTable)) as FormDataSource;
+        SalesTable _salestable = SalesTable_ds.cursor();
+}
+-------------
+COC for Class:
+[ExtensionOf(classStr(SalesFormLetter))]
+final class TM_SalesFormLetter_Extension
+{
+    public static void main(Args  args)
+    {
+        RefRecId             record         = args.record().RecId;
+        DocumentStatus     parmEnum       = args.parmEnum();
+        Object             callerForm     = args.caller();
+        MenuItemNameAction callerMenuItem = args.menuItemName();
+        SalesTable         salesTable     = SalesTable::findRecId(record);
+    }
+}
+
+[ExtensionOf(classStr(SalesFormLetter))]
+final class TM_SalesFormLetter_Extension
+{
+    public boolean  validate(Object _calledFrom)
+    {
+        DocumentStatus        doc;
+        salesTable            salesTablelocal;
+        boolean               result,processstatus,checkvalidate,deliverytermcheck;
+        processstatus=true;
+        Dialogbutton db;
+        checkvalidate= next validate(_calledFrom);
+    }
+}
+------------------
+COC for Table:
+
+[ExtensionOf(tableStr(SalesTable))]
+final class TMSalesTable_Extension
+{
+    public boolean  validateWrite()
+    {
+        boolean         ok = true;
+        ok = next validateWrite();
+
+        if ( this.TMSaleDiscPer > 100)
+            ok = checkFailed("Discount percentage can not be more than 100%");
+
+        return ok;
+    }
+}
+------------------
+Event handler for Table:
+
+[DataEventHandler(tableStr(SalesTable), DataEventType::Inserting)]
+public static void SalesTable_onInserting(Common sender, DataEventArgs e)
+    {
+        SalesTable salesTableObj = sender as SalesTable;
+        SalesAgreementHeader                salesAgreement;
+        AgreementHeaderDefault              agreementHeaderDefault;
+        SalesAgreementHeaderDefault         SalesAgreementHeaderDefault;
+        str                                 tmpVal;
+        TM_CustomDocumentListParms docList = TM
+_CustomDocumentListParms::find(TM_DocsCustom::SalesConfirmation, salesTableObj.TaxGroup);
+
+        if(docList && docList.TermsAndConditions && docList.TermsAndConditions != "" &&
+            salesTableObj.SalesId && salesTableObj.SalesId != "" && salesTableObj.TM_TermsAndConditions == "")
+        {
+            salesTableObj.TM_TermsAndConditions = docList.TermsAndConditions;
+        }
+    }
+--------------------
+COC for Data Entity:
+
+[ExtensionOf(tableStr(SalesOrderLineVEntity))]
+final class SalesOrderLineV2Entity_Extension
+{
+    public boolean validateWrite()
+    {
+        boolean ret = next validateWrite();
+
+        if (this.DeliveryAddressCountryRegionID != "US")
+        {
+            ret = checkFailed("Delivery Address is not US.");
+        }
+        return ret;
+    }
+}
