@@ -1,0 +1,83 @@
+Way 1:
+----------------------------------------
+static void createPO(Args _args)
+{
+    NumberSeq       numberSeq;
+    Purchtable      Purchtable;
+    PurchLine       PurchLine;
+    PurchFormLetter purchFormLetter;
+
+    ;
+    ttsbegin;
+    numberSeq =NumberSeq::newGetNum(purchparameters::numRefPurchId(),true);
+
+    // Initialize Purchase order values
+    Purchtable.initValue();
+    Purchtable.PurchId = numberSeq.num();
+    Purchtable.OrderAccount = 'US-101';
+    Purchtable.CurrencyCode = 'USD';
+    Purchtable.initFromVendTable();
+    if (!Purchtable.validateWrite())
+    {
+        throw Exception::Error;
+    }
+    Purchtable.insert();
+
+    // Initialize Purchase Line items
+    PurchLine.PurchId = Purchtable.PurchId;
+    PurchLine.ItemId = 'C0001';
+    PurchLine.PurchQty = 2;
+    PurchLine.createLine(true, true, true, true, true, false);
+    PurchLine.clear();
+
+
+    PurchLine.PurchId = Purchtable.PurchId;
+    PurchLine.ItemId = 'C0002';
+    PurchLine.PurchQty = 1;
+    PurchLine.createLine(true, true, true, true, true, false);
+    ttscommit;
+
+        ////PO confirmation
+    ttsBegin;
+    purchTable = PurchTable::find(purchTable.PurchId);
+    purchFormLetter = PurchFormLetter::construct(DocumentStatus::PurchaseOrder);
+    purchFormLetter.update(purchTable, strFmt("Inv_%1", purchTable.PurchId));
+    ttsCommit;
+
+        //PO Product Receipt
+    ttsBegin;
+    purchFormLetter = purchFormLetter::construct(DocumentStatus::PackingSlip);
+    purchFormLetter.update(purchtable, // Purchase record Buffer
+    "PO_"+purchTable.PurchId, // Invoice Number
+    systemdateget()); // Transaction date
+    ttsCommit;
+   
+
+    //PO Invoice
+    ttsBegin;
+    purchFormLetter = purchFormLetter::construct(DocumentStatus::Invoice);
+    //purchFormLetter.update(purchtable,"Inv_123",systemdateget()); // Transaction date
+    //purchFormLetter.update(purchTable, strFmt("PO_%1", purchTable.PurchId));
+    purchFormLetter.update(purchtable, // Purchase record Buffer
+    "INV-"+purchTable.PurchId, // Invoice Number
+    systemdateget()); // Transaction date
+   
+    ttscommit;
+    if (PurchTable::find(purchTable.PurchId).DocumentStatus == DocumentStatus::Invoice)
+    {
+        info(strfmt("Posted invoiced journal for purchase order %1",purchTable.PurchId));
+    }
+}
+--------------------------------------
+Way 2:
+      purchLine_ins.reread();
+      purchLine_ins.clear();
+      purchLine_ins.initValue();
+      /*purchLine_ins.initFromPurchTable(PurchTable::find(purchLine.PurchId));
+      axPurchLine = AxPurchLine::newPurchLine(purchLine_ins);
+      axPurchLine.parmItemId(purchLine.ItemId);
+      axPurchLine.parmPurchQty(num1_r - num1_o);
+      axPurchLine.parmQtyOrdered(num1_r - num1_o);
+      axPurchLine.parmPurchPrice(0);
+      axPurchLine.parmVariantId(purchLine.VariantId);
+      axPurchLine.doSave();*/
