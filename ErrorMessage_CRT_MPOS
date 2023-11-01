@@ -1,0 +1,9 @@
+If however the error condition is met in the Commerce Run Time (CRT) you need to show the error message in MPOS, you can leverage the CommerceRunTimeException
+
+-- throw new CommerceException(“string_55047”, “CUSTOM ERROR MESSAGE”);
+
+OR
+
+If however the error condition is met in the Commerce Run Time (CRT) you need to show the error message in MPOS, you can leverage the CommerceRunTimeException
+
+throw new CommerceException(“string_55047”, “CUSTOM ERROR MESSAGE”);
