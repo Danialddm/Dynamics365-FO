@@ -73,6 +73,9 @@ Event handler for Form Datasource:
 [FormDataSourceEventHandler(formDataSourceStr(SalesTableListPage, SalesTable), FormDataSourceEventType::Activated)]
     public static void SalesTable_OnActivated(FormDataSource sender, FormDataSourceEventArgs e)
     {
+////////////////for query executing/////////
+  sender.query().dataSourceName(sender.name()).addRange(fieldnum(PayrollEmployerTaxRegion,     CountryRegionId)).value(queryValue(LogisticsAddressCountryRegion::findByISOCode(SysCountryRegionCode::countryInfo(curext())).CountryRegionId));
+///////////////
         SalesTable SalesTable = sender.cursor() as SalesTable;
 FormRun element = sender.formRun();
 FormCheckBoxControl SalesTable_TMCreditLimitChecked = element.design(0).controlName("SalesTable_TMCreditLimitChecked");
