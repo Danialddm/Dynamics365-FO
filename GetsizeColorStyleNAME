@@ -1,3 +1,29 @@
+--------------code for one method for all dimensions name insted of 4 methods--------------------
+FieldId dimFieldId;
+EcoResProductRecId product;
+boolean isCalledFromInventProductDimensionLookup;
+
+if (FormDataUtil::isFormDataSource(_inventDim))
+{
+    FormDataSource dataSource = FormDataUtil::getFormDataSource(_inventDim);
+    if (formHasMethod(dataSource.formRun(), formMethodStr(InventProductDimensionLookup, inventDimSetupObject)))
+    {
+        Object formRun = dataSource.formRun();
+        InventDimCtrl_Frm_Lookup inventDimCtrl_Frm_Lookup = formRun.inventDimSetupObject();
+        dimFieldId = inventDimCtrl_Frm_Lookup.parmMainSortFieldId();//4 dimension field id
+        product = InventTable::find(inventDimCtrl_Frm_Lookup.callerItemId()).Product;
+        isCalledFromInventProductDimensionLookup = true;
+    }
+-----------one way- more simple--------------------------
+EcoResConfiguration ecoResConfiguration;
+EcoResProductMasterConfiguration ecoResProductMasterConfiguration;
+select firstonly RecId from ecoResProductMasterConfiguration
+where ecoResProductMasterConfiguration.ConfigProductMaster == product//(product must be fetched from one place-in this tip you can get from the above)
+exists join ecoResConfiguration
+where ecoResConfiguration.RecId == ecoResProductMasterConfiguration.Configuration
+&& ecoResConfiguration.Name ==  _inventDim.configId;
+dimName = EcoResProductMasterDimValueTranslation::getDescriptionOrDefaultDescription(dimRecId, userLanguageId);
+-------------------------------OR another way-------------------------------------
 public static Name getSize(VendPackingSlipTrans _vendPackingsliptrans)
     {
         EcoResProductMasterSize ecoResProductMasterSize;
