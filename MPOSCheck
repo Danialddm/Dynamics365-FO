@@ -11,3 +11,4 @@ with the tenant user you’re activating POS with.
 PS K:\temp> cd \RetailSDK\Tools\
 
 PS K:\RetailSDK\Tools> .\RetailTenantUpdateTool.ps1
+(for error in connection for the real time service, you should the above powershell command).
