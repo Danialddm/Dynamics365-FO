@@ -1,0 +1,72 @@
+-- this is correct because in while loop we do not have any other object that has used in while(vendpavkingsliptrans)
+*******************************************************************************************************************
+select firstonly1 vendPackingSlipJour //get the last inserted record
+        order by vendPackingSlipJour.RecId desc
+            where vendPackingSlipJour.PurchId == purchId;
+        if(vendPackingSlipJour.RecId)
+        {
+            refRecId = vendPackingSlipJour.RecId;
+            while select * from vendPackingSlipTrans 
+                where vendPackingSlipTrans.VendPackingSlipJour == refRecId
+                && vendPackingSlipTrans.OrigPurchid == purchId 
+            {
+                accountingDistribution.clear();
+                accountingDistribution.reread();
+                select forupdate accountingDistribution where accountingDistribution.SourceDocumentLine == vendPackingSlipTrans.SourceDocumentLine;
+                if(accountingDistribution.RecId)
+                {
+                    purchLine.clear();
+                    purchLine.reread();
+                    select firstonly1 purchLine
+                        where purchLine.InventTransId == vendPackingSlipTrans.InventTransId
+                        && purchLine.PurchId == vendPackingSlipTrans.OrigPurchid
+                        && vendPackingSlipTrans.SourceDocumentLine == accountingDistribution.SourceDocumentLine
+                        && purchLine.ItemId == vendPackingSlipTrans.ItemId
+                        && purchLine.ARIsFOC == NoYes::Yes;
+                    if(purchLine.RecId)
+                    {
+                        ttsbegin;
+                        accountingDistribution.selectForUpdate(true);
+                        accountingDistribution.AccountingCurrencyAmount = purchLine.QtyOrdered * purchLine.PurchPrice;
+                        accountingDistribution.TransactionCurrencyAmount = purchLine.QtyOrdered * purchLine.PurchPrice;
+                        accountingDistribution.update();
+                        ttscommit;
+                    }
+                }
+            }
+
+-- this is wrong because in while loop we have other object that has used in while(vendpavkingsliptrans) and so the buffer table will be cleared and loop does not work.
+*******************************************************************************************************************
+
+        if(vendPackingSlipJour.RecId)
+        {
+            refRecId = vendPackingSlipJour.RecId;
+            while select * from vendPackingSlipTrans 
+                where vendPackingSlipTrans.VendPackingSlipJour == refRecId
+                && vendPackingSlipTrans.OrigPurchid == purchId 
+            {
+                accountingDistribution.clear();
+                accountingDistribution.reread();
+                select forupdate accountingDistribution where accountingDistribution.SourceDocumentLine == vendPackingSlipTrans.SourceDocumentLine;
+                if(accountingDistribution.RecId)
+                {
+                    purchLine.clear();
+                    purchLine.reread();
+                    select firstonly1 purchLine
+                      join vendPackingSlipTrans//this is wrong line
+                        where purchLine.InventTransId == vendPackingSlipTrans.InventTransId
+                        && purchLine.PurchId == vendPackingSlipTrans.OrigPurchid
+                        && vendPackingSlipTrans.SourceDocumentLine == accountingDistribution.SourceDocumentLine
+                        && purchLine.ItemId == vendPackingSlipTrans.ItemId
+                        && purchLine.ARIsFOC == NoYes::Yes;
+                    if(purchLine.RecId)
+                    {
+                        ttsbegin;
+                        accountingDistribution.selectForUpdate(true);
+                        accountingDistribution.AccountingCurrencyAmount = purchLine.QtyOrdered * purchLine.PurchPrice;
+                        accountingDistribution.TransactionCurrencyAmount = purchLine.QtyOrdered * purchLine.PurchPrice;
+                        accountingDistribution.update();
+                        ttscommit;
+                    }
+                }
+            }
