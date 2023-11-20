@@ -1,8 +1,11 @@
 To buid RetailSDK and generate a retail deployable package:
 1- the command is as follows:
-E:\myRetailSDK\RetailSDKUpdate2023-08-05>MSBuild /p:CheckVS2017Installed=false /p:CheckVSDependencies=false /p:Configuration=Release
+K:
+cd k:\myRetailSDK\RetailSDKUpdate2023-08-05>MSBuild
+k:\myRetailSDK\RetailSDKUpdate2023-08-05>MSBuild /p:CheckVS2017Installed=false /p:CheckVSDependencies=false /p:Configuration=Release
 
 2- dll must be in Refrence folder
 3- config.Ext file must be in a asset file
-4- webconfig must be changed based on your config file in retailserver folder of the packages in retailSDK folder.
-5- 
+5- the content of the web.config in retailserver folder must be as the as config.Ext(You can find the web.config file in the Retail SDK\Packages\RetailServer\Code folder)
+6- After building, webconfig must be changed based on your config file in retailserver folder of the packages in retailSDK folder of the built file.
+7- For UI extension, your manifest.json file must be copied in the Assets as well.
