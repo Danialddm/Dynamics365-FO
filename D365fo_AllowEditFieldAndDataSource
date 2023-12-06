@@ -1,0 +1,35 @@
+//allow edit for brand name
+public static class AREcoResProductDetailsExtended_Extension
+{
+    [PostHandlerFor(formStr(EcoResProductDetailsExtended), formMethodStr(EcoResProductDetailsExtended, setItemStockedDependentObjects))]
+    public static void EcoResProductDetailsExtended_Post_setItemStockedDependentObjects(XppPrePostArgs args)
+    {
+        FormRun form = args.getThis();
+        FormDesign design = form.design();
+ 
+        FormDataSource fds = form.dataSource(formDataSourceStr(EcoResProductDetailsExtended,EcoResProduct));
+        fds.allowEdit(true);
+
+        FormControl brandName = design.controlName(formControlStr(EcoResProductDetailsExtended, ARBrandName));
+        brandName.allowEdit(true);
+    }
+
+    [FormDataSourceEventHandler(formDataSourceStr(EcoResProductDetailsExtended, EcoResProduct), FormDataSourceEventType::Activated)]
+    public static void EcoResProduct_OnActivated(FormDataSource sender, FormDataSourceEventArgs e)
+    {
+        EcoResProduct ecoResproduct_update;
+        EcoResProduct ecoResproduct = sender.cursor() as EcoResProduct;
+        ;
+        ecoResproduct_update.clear();
+        select forupdate firstonly1 ecoResproduct_update 
+            where ecoResproduct_update.RecId == ecoResproduct.RecId;
+        if(ecoResproduct_update.RecId)
+        {
+            ttsbegin;
+            ecoResproduct_update.selectForUpdate(true);
+            ecoResproduct_update.ARBrandName = ecoResproduct.ARBrandName;
+            ecoResproduct_update.update();
+            ttscommit;
+        }
+    }
+}
