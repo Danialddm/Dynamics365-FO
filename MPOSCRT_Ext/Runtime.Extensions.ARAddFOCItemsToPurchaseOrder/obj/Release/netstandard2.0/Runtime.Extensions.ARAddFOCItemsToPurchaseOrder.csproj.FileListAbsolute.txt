@@ -1,0 +1,9 @@
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\bin\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.deps.json
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\bin\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.dll
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\bin\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.pdb
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.csprojAssemblyReference.cache
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.csproj.CoreCompileInputs.cache
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.AssemblyInfoInputs.cache
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.AssemblyInfo.cs
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.dll
+k:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Release\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.pdb

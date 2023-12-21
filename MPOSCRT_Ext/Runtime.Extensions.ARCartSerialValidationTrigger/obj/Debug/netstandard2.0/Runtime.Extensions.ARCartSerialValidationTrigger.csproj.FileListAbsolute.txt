@@ -1,0 +1,12 @@
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\bin\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.deps.json
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\bin\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.dll
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\obj\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.csproj.CoreCompileInputs.cache
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\obj\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.AssemblyInfoInputs.cache
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\obj\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.AssemblyInfo.cs
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\bin\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.pdb
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\obj\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.dll
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\obj\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.pdb
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.deps.json
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.dll
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.pdb
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARCartSerialValidationTrigger\obj\Debug\netstandard2.0\Runtime.Extensions.ARCartSerialValidationTrigger.csprojAssemblyReference.cache

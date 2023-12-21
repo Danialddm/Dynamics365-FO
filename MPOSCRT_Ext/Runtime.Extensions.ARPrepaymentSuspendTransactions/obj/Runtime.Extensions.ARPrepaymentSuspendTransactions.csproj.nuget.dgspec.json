@@ -1,0 +1,83 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\SampleExtensions\\CommerceRuntime\\Runtime.Extensions.ARPrepaymentSuspendTransactions\\Runtime.Extensions.ARPrepaymentSuspendTransactions.csproj": {}
+  },
+  "projects": {
+    "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\SampleExtensions\\CommerceRuntime\\Runtime.Extensions.ARPrepaymentSuspendTransactions\\Runtime.Extensions.ARPrepaymentSuspendTransactions.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\SampleExtensions\\CommerceRuntime\\Runtime.Extensions.ARPrepaymentSuspendTransactions\\Runtime.Extensions.ARPrepaymentSuspendTransactions.csproj",
+        "projectName": "Runtime.Extensions.ARPrepaymentSuspendTransactions",
+        "projectPath": "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\SampleExtensions\\CommerceRuntime\\Runtime.Extensions.ARPrepaymentSuspendTransactions\\Runtime.Extensions.ARPrepaymentSuspendTransactions.csproj",
+        "packagesPath": "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\References",
+        "outputPath": "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\SampleExtensions\\CommerceRuntime\\Runtime.Extensions.ARPrepaymentSuspendTransactions\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\NuGet.Config",
+          "C:\\Users\\d.mohammadi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "E:\\myRetailSDK\\RetailSDKUpdate2023-08-05\\pkgs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Microsoft.Dynamics.Commerce.Runtime.Data": {
+              "target": "Package",
+              "version": "[9.45.23166.8, )"
+            },
+            "Microsoft.Dynamics.Commerce.Runtime.DataServices.Messages": {
+              "target": "Package",
+              "version": "[9.45.23166.8, )"
+            },
+            "Microsoft.Dynamics.Commerce.Runtime.Framework": {
+              "target": "Package",
+              "version": "[10.12.23123.2, )"
+            },
+            "Microsoft.Dynamics.Commerce.Runtime.Messages": {
+              "target": "Package",
+              "version": "[9.45.23166.8, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

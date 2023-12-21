@@ -1,0 +1,11 @@
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\bin\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.deps.json
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\bin\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.dll
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.deps.json
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.dll
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.pdb
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\obj\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.csprojAssemblyReference.cache
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\obj\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.csproj.CoreCompileInputs.cache
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\obj\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.AssemblyInfoInputs.cache
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\obj\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.AssemblyInfo.cs
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\obj\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.dll
+E:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARPrepaymentSuspendTransactions\obj\Debug\netstandard2.0\Runtime.Extensions.ARPrepaymentSuspendTransactions.pdb

@@ -1,0 +1,12 @@
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\bin\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.deps.json
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\bin\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.dll
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.csproj.CoreCompileInputs.cache
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.AssemblyInfoInputs.cache
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.AssemblyInfo.cs
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\bin\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.pdb
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.csprojAssemblyReference.cache
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.dll
+K:\myRetailSDK\RetailSDKUpdate2023-08-05\SampleExtensions\CommerceRuntime\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder\obj\Debug\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.pdb
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.deps.json
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.dll
+K:\RetailServer\WebRoot\bin\Ext\netstandard2.0\Runtime.Extensions.ARAddFOCItemsToPurchaseOrder.pdb

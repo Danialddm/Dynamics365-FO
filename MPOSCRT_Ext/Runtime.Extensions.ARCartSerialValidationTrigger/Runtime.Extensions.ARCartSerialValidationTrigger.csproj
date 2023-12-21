@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>ddm</Authors>
+    <Company>AR= ARADA Development LLC.</Company>
+    <Product>ARADA Retail Customization</Product>
+    <Description>Check the serial number validation for both the bill and DB</Description>
+    <Copyright>ddm</Copyright>
+    <FileVersion>23.20.08.11</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>K:\RetailServer\WebRoot\bin\Ext\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Dynamics.Commerce.Runtime.Data" Version="9.45.23166.8" />
+    <PackageReference Include="Microsoft.Dynamics.Commerce.Runtime.DataServices.Messages" Version="9.45.23166.8" />
+    <PackageReference Include="Microsoft.Dynamics.Commerce.Runtime.Framework" Version="10.12.23123.2" />
+  </ItemGroup>
+
+</Project>
