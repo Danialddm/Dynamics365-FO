@@ -1,0 +1,46 @@
+{
+  "exclude": [
+    "AuditEventSignatureSample",
+    "B2BSample",
+    "CreateCashManagementTransactionSample",
+    "CreateTenderCountingTransactionSample",
+    "CustomerSearchWithAttributesSample",
+    "DualDisplaySample",
+    "FiscalRegisterSample",
+    "GasStationHeaderItemSample",
+    "PaymentSample",
+    "PrefixUserIdSample",
+    "PromotionsSample",
+    "SalesOrdersSample",
+    "SalesTransactionSignatureNorway",
+    "SalesTransactionSignatureSample",
+    "SalesTransBuildNumberSample",
+    "SampleExtensions",
+    "SampleExtensions2",
+    "SequentialSignature",
+    "StoreHoursSample",
+    "SuspendTransactionReceiptSample",
+    "ConnectedStoreAlertsSample",
+    "WarrantyAndReturnSample"
+    //"ARAddFOCItemsintoPOMessage"
+  ],
+  "compilerOptions": {
+    "module": "system",
+    "alwaysStrict": true,
+    "declaration": true,
+    "lib": [ "dom", "es5", "scripthost", "es2015.promise" ],
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "stripInternal": true,
+    "skipLibCheck": true,
+    "target": "es5",
+    "typeRoots": [ "./typings" ],
+    "rootDir": "./",
+    "mapRoot": "./",
+    "sourceRoot": "./"
+  }
+}

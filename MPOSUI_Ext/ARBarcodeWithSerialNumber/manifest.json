@@ -1,0 +1,29 @@
+{
+  "$schema": "../manifestSchema.json",
+  "name": "ARADA_Pos_Extension_ARBarcodewithSerialNumber",
+  "publisher": "ARADA",
+  "version": "7.2.0",
+  "minimumPosVersion": "7.2.0.0",
+  "components": {
+    "extend": {
+      "triggers": [
+        {
+          "triggerType": "PostProductSale",
+          "modulePath": "TriggersHandlers/PostProductSaleTrigger"
+        },
+        {
+          "triggerType": "PostGetSerialNumber",
+          "modulePath": "TriggersHandlers/PostGetSerialNumberTrigger"
+        }
+      ],
+      "requestHandlers": [
+        {
+          "modulePath": "Handlers/GetSerialNumberClientRequestHandlerExt"
+        },
+        {
+          "modulePath": "Handlers/GetScanResultClientRequestHandlerExt"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "../manifestSchema.json",
+  "name": "ARADA_Pos_Extension_ARAddFOCItemsMessage",
+  "publisher": "ARADA",
+  "version": "1.0.0",
+  "minimumPosVersion": "1.0.0.0",
+  "description" : "Display a warning message for FOC items",
+  "components": {
+    "extend": {
+      "views": {
+        "PickingAndReceivingDetailsView": {
+          "appBarCommands": [ { "modulePath": "ViewExtensions/PickingAndReceivingDetailsCmd" } ],
+          "orderLinesListConfiguration": { "modulePath": "" }
+
+        }
+      }
+    }
+  }
+}
