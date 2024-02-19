@@ -1,0 +1,21 @@
+        [SysClientCacheDataMethodAttribute(true)]
+        display public DimensionValue  displayDepartment(CustInvoiceTrans _custInvoiceTrans)
+        {
+            DimensionAttributeValueSetStorage dimStorage;
+            Counter i;
+            DimensionValue dimensionValue;
+            RefRecId defaultdim;
+ 
+            defaultdim = SalesLine::find(_custInvoiceTrans.SalesId, _custInvoiceTrans.LineNum).DefaultDimension;
+            dimStorage = DimensionAttributeValueSetStorage::find(defaultdim);
+ 
+            for (i=1 ; i<= dimStorage.elements() ; i++)
+            {
+                if(DimensionAttribute::find(dimStorage.getAttributeByIndex(i)).Name=='Department') //Give the Attribute you want to get the value for.
+                {
+                    dimensionValue = dimStorage.getDisplayValueByIndex(i);
+                    break;
+                }
+            }
+            return dimensionValue;
+        }
