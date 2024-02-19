@@ -1,0 +1,11 @@
+        [SysClientCacheDataMethodAttribute(true)]
+        display public NoYesId displayDomesticSales(CustInvoiceJour _custInvoiceJour)
+        {
+            CompanyInfo companyInfo = CompanyInfo::find();//legal entity-primary address
+            CustTable custTable;
+            custTable = custTable::find(_custInvoiceJour.OrderAccount);//primary address
+                if((companyInfo.postalAddress().CountryRegionId) == (custTable.postalAddress().CountryRegionId))
+                    return NoYes::Yes;
+                else
+                    return NoYes::No;
+        }
