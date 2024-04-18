@@ -1,5 +1,6 @@
 Commerce Scale Unit (CSU) VS old MPOS:
 ----------------------------------------
+POS cannot talk to Dynamics 365 F&O directly. 
 Commerce Scale Unit (CSU) combines the Commerce channel database, Commerce async client, Retail Server, and Cloud point of sale (POS) components. 
 
 CSU Core is the next-generation, high-performance platform that Dynamics 365 Commerce offers to host the headless commerce engine. 
