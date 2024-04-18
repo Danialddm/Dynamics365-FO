@@ -9,6 +9,12 @@ A CRT service is a group of requests/responses.
 Anytime that you do something in POS, POS sends a request to Commerce Scale Unit, and Commerce Scale Unit calls CRT. 
 CRT processes the request and sends back the response.
 
+CRT services
+---------------
+Each CRT service contains one or more requests/responses. 
+For example, the Customer service in CRT contains all the customer-related requests/responses. 
+Each request/response is run in a different flow.
+
 @@@@@@this is veryyyyyyyyyyyyyyyy important@@@@@@@@@@@
 CRT extension code should not refer to or use any of the CRT business logic classes, methods, 
 or handlers (such as classes from Runtime.Workflow, Runtime.Services, or Runtime.DataServices). 
