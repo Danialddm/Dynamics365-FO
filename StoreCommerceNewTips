@@ -1,3 +1,26 @@
- Dynamics 365 Commerce has introduced Store Commerce, Commerce SDK and CSU Core, which are transforming the way the platform can be used. These new features and improvements will benefit you as a customer and partner, so you should stay updated and informed. CSU Core is a very important and relevant topic that deserves a dedicated article.
+Commerce Scale Unit (CSU) VS old MPOS:
+----------------------------------------
+Commerce Scale Unit (CSU) combines the Commerce channel database, Commerce async client, Retail Server, and Cloud point of sale (POS) components. 
 
-CSU Core is a technology update over the legacy CSU. Both platforms are used by Dynamics 365 Commerce to host the headless commerce engine, which provides the same functionality. However, CSU Core is more efficient and performant because it uses ASP.NET Core and .NET Core, which are cross-platform and high-performance frameworks. In CSU Core, the Cloud CSU is hosted in .NET 6, which is the latest version of .NET Core. .NET 6 offers many improvements in performance, scalability, and reliability, such as faster web applications, smarter code optimization, better support for modern web standards, and lower memory usage. 
+CSU Core is the next-generation, high-performance platform that Dynamics 365 Commerce offers to host the headless commerce engine. 
+CSU Core provides the same functionality as the existing CSU, but it's highly optimized and performant because it uses ASP.NET Core and .NET Core.
+
+Dynamics 365 Commerce has introduced Store Commerce, Commerce SDK and CSU Core.
+CSU Core is a technology update over the legacy CSU. 
+Both platforms are used by Dynamics 365 Commerce to host the headless commerce engine, which provides the same functionality. 
+However, CSU Core is more efficient and performant because it uses ASP.NET Core and .NET Core, which are cross-platform and high-performance frameworks. 
+In CSU Core, the Cloud CSU is hosted in .NET 6, which is the latest version of .NET Core.
+
+Download the Commerce Scale Unit installer:
+-------------------------------------------
+In headquarters, go to Retail and Commerce > Headquarters setup > Commerce scheduler > Channel database.
+On the first page of the installer, select the components to install. You can install the following components:
+    - Commerce channel database together with Async Client
+    - Retail Server
+    - Cloud POS
+ A valid version of Microsoft SQL Server is also needed.
+The Retail Server URL is automatically entered from the configuration file.
+Select a valid Secure Sockets Layer (SSL) certificate to use for HTTPS communication.
+Install the Commerce channel database and Async Client on one computer, and Retail Server and Cloud POS on a second computer. 
+
+
