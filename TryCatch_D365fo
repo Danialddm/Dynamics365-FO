@@ -1,4 +1,31 @@
- try
+To grab the info message in the UI:
+catch
+{ 
+SysInfologEnumerator s = SysInfologEnumerator::newData(infolog.cut());                     
+while (s.moveNext())                            
+{                                
+  SysInfologMessageStruct strc = new SysInfologMessageStruct(s.currentMessage());                                
+  Exception exception = s.currentException();                                
+  errorRun += strfmt('%1--%2', exception, strc.message()) + ' ';                                                            
+}                                                  
+}
+--------------------------------------------------------------------------------------------------------------------
+catch(Exception::Deadlock)        
+{            
+ttsabort;            
+retry;        
+}        
+        
+catch(Exception::CLRError)        
+{            
+ttsAbort;                        
+System.Exception ex  = CLRInterop::getLastException();            
+response.ResultResponse(ex.Message);                              
+}
+           
+
+----------------------------------------------------------------------------------------------------------------------
+try
     {
         ttsbegin;
 
