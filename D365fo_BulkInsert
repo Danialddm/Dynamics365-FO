@@ -1,0 +1,8 @@
+RecordInsertList bulkInsert =  new RecordInsertList(tableNum(InventJournalTrans)); 
+
+bulkInsert.add(inventJournaltrans);
+              
+ttsbegin;                                    
+bulkInsert.insertDatabase();                    
+ttscommit;
+
