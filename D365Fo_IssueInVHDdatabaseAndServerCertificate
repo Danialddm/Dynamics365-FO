@@ -2,6 +2,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------
 1- if you have certificate error (The required data encryption certificate was not found when trying to edit the Database connection profile table and the ConnectionString field. Please add a valid certificate)
 you should run the below script to clean the data (only for certificate issue):
+** before doing anything, you should change the certificate to "*.dynamics.com" cert to ensur that both AOS and retail server would be run using ssl/https.
 ""--Tidy up the batch server config from the previous environment
 DELETE FROM SYSSERVERCONFIG
  
@@ -422,8 +423,8 @@ END CATCH
   3-4: An xml file would be generated after running the above.
   3-4: run --> AXUpdateInstaller.exe import -runbookfile=Package-00130-runbook.xml
   3-5: run --> AXUpdateInstaller.exe execute -runbookid=Package-00130-runbook
-  ** the 3-5 step has two seteps embede. if you have error on the second step(retarget retail server, you should run it manually, otherwise go to the next step)
-  3-6: Run --> C:\Users\Dadmohammadi.Danial\ddmPro\RetailServer\EnvironmentRetarget> .\RetargetRetailServer.ps1 -- poweshell
+  ** the 3-5 step has two seteps embeded. if you have error on the second step(retarget retail server, you should run it manually, otherwise go to the next step)
+  3-6: Run --> C:\Users\Dadmohammadi.Danial\ddmPro\RetailServer\EnvironmentRetarget> .\RetargetRetailServer.ps1 -- poweshell --this file exist in the unzipped folder downloaded from the lcs.
   ** After running the retarget, the conncetion string in the channel database would be displyed.
 
 4- Go to d365fo and run the initilaize in the commerce parameters form.
