@@ -1,0 +1,432 @@
+-- This doc is related to resolve the databse issue after restoring or changing some data or certificate issue in one box VHD machine:
+--------------------------------------------------------------------------------------------------------------------------------------
+1- if you have certificate error (The required data encryption certificate was not found when trying to edit the Database connection profile table and the ConnectionString field. Please add a valid certificate)
+you should run the below script to clean the data (only for certificate issue):
+""--Tidy up the batch server config from the previous environment
+DELETE FROM SYSSERVERCONFIG
+ 
+--Tidy up server sessions from the previous environment.
+DELETE FROM SYSSERVERSESSIONS
+ 
+--Tidy up printers from the previous environment
+DELETE FROM SYSCORPNETPRINTERS
+ 
+--Tidy up client sessions from the previous environment.
+DELETE FROM SYSCLIENTSESSIONS
+ 
+--Tidy up batch sessions from the previous environment.
+DELETE FROM BATCHSERVERCONFIG
+ 
+--Tidy up batch server to batch group relation table
+DELETE FROM BATCHSERVERGROUP
+ 
+--Set any waiting, executing, ready or canceling batches to withhold
+UPDATE BatchJob
+SET STATUS = 0
+WHERE STATUS  IN (1,2,5,7)
+GO
+ 
+--Disable Change Data Capture / CDC from Microservices team as it isn't compatible on another server
+IF(1=(SELECT is_cdc_enabled FROM sys.databases WHERE name = DB_NAME()))
+BEGIN
+    EXEC sys.sp_cdc_disable_db
+END
+ 
+IF '$(EnvSku)' = 'prod'
+BEGIN
+  -- Batchjob History Cleanup from source environment
+  BEGIN TRAN
+  DELETE BATCHJOBHISTORY WHERE CREATEDDATETIME < GETDATE()
+  COMMIT TRAN
+  BEGIN TRAN
+  DELETE BATCHHISTORY WHERE NOT EXISTS (SELECT RECID FROM BATCHJOBHISTORY JOB  WHERE JOB.RECID = BATCHJOBHISTORYID)
+  COMMIT TRAN
+  BEGIN TRAN
+  DELETE BATCHCONSTRAINTSHISTORY WHERE NOT EXISTS (SELECT RECID FROM BATCHHISTORY WHERE BATCHHISTORY.RECID = BATCHCONSTRAINTSHISTORY.BATCHID)
+  COMMIT TRAN 
+   
+  --Update SYSCONFIGURATION table 
+  UPDATE SYSGLOBALCONFIGURATION SET [VALUE] = 1 WHERE NAME IN ( 'DATAAREAIDLITERAL', 'PARTITIONLITERAL ')
+  --Tidy up printers from the previous environment
+  UPDATE SYSGLOBALCONFIGURATION SET VALUE = 'SQLAZURE' WHERE NAME = 'BACKENDDB'
+ 
+  --Tidy up printers from the previous environment
+  UPDATE SYSGLOBALCONFIGURATION SET VALUE = 1 WHERE NAME = 'TEMPTABLEINAXDB' 
+END
+ 
+IF '$(EnvSku)' = 'sandbox'
+BEGIN
+  --disable all users except Admin, Microsoft account and Dynamics-alias users (they should go and re-enable as they see fit),
+  DECLARE @sqlDisableUserCmd nvarchar(256) = 'UPDATE UserInfo
+    SET ENABLE = 0
+    WHERE ID <> ''Admin'' AND NETWORKALIAS not like ''%dynamics.com%'''
+ 
+  IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS 
+    WHERE TABLE_NAME = 'UserInfo' 
+    AND COLUMN_NAME = 'IsMicrosoftAccount')
+  BEGIN
+    SET @sqlDisableUserCmd = @sqlDisableUserCmd + ' AND IsMicrosoftAccount <> 1'
+  END
+ 
+  exec sp_executesql @sqlDisableUserCmd
+ 
+  --Proactively enable API Service Account.  This is optional account customer can create, and will not be enabled in the source.
+  --Microsoft does not create this app user, but customers optionally can and they can choose which security role to give it.
+  --Enabling it during database refresh ensures that their app user is able to run X++ cleanup scripts immediately after
+  --the refresh is completed via Database Movement API from LCS.
+  UPDATE UserInfo
+  SET ENABLE = 1
+  WHERE ID = 'DBMovementAPI'
+ 
+  --Remove the SMTP server configuration to prevent sandbox from sending mails
+  UPDATE SysEmailParameters
+  SET SMTPRELAYSERVERNAME = '', MAILERNONINTERACTIVE = 'SMTP'
+ 
+  --Blank out all email addresses - in the case someone adds back SMTP config this will prevent accidentally sending mails
+  UPDATE LogisticsElectronicAddress
+  SET LOCATOR = '' 
+  WHERE Locator LIKE '%@%'
+   
+  --Remove all print management settings - there is email addresses stored in a container field here - again we want to prevent accidentally sending a vendor/customer a PO/SO email.
+  DELETE FROM PrintMgmtSettings 
+ 
+  DELETE FROM PrintMgmtDocInstance 
+END
+ 
+-- Change Maintenance Mode setting to disabled, in case it was enabled on the source environment
+IF EXISTS (SELECT * FROM Information_Schema.Tables WHERE Table_Name = 'SQLSYSTEMVARIABLES')
+BEGIN
+    IF EXISTS (SELECT * FROM SQLSYSTEMVARIABLES WHERE PARM = 'CONFIGURATIONMODE' AND VALUE = 1)
+    BEGIN
+        UPDATE SQLSYSTEMVARIABLES
+        SET VALUE = 0
+        WHERE PARM = 'CONFIGURATIONMODE'
+    END
+END
+ 
+-- Clean up tables where data is encrypted.
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'SysEMailSMTPPassword')
+BEGIN
+    TRUNCATE TABLE SysEMailSMTPPassword
+END
+ 
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'SYSOAUTHUSERTOKENS')
+BEGIN
+    TRUNCATE TABLE SYSOAUTHUSERTOKENS
+END
+ 
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'B2BInvitationConfig')
+BEGIN
+    TRUNCATE TABLE B2BInvitationConfig
+END
+ 
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'PersonnelIntegrationConfiguration')
+BEGIN
+    TRUNCATE TABLE PersonnelIntegrationConfiguration 
+END
+ 
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'CatExternalCatalogProperties')
+BEGIN
+    TRUNCATE TABLE CatExternalCatalogProperties
+END
+ 
+--CDS Unlink Various Tables BEGIN
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'DualWriteProjectConfiguration')
+BEGIN
+  TRUNCATE TABLE DualWriteProjectConfiguration;
+END
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'DualWriteProjectFieldConfiguration')
+BEGIN
+  TRUNCATE TABLE DualWriteProjectFieldConfiguration;
+END
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'DualWriteErrorLog')
+BEGIN
+  TRUNCATE TABLE DualWriteErrorLog;
+END
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'DualWriteProjectConfigurationStaging')
+BEGIN
+  TRUNCATE TABLE DualWriteProjectConfigurationStaging;
+END
+IF EXISTS (select * FROM Information_Schema.Tables WHERE Table_Name = 'BusinessEventsDefinition')
+BEGIN
+  TRUNCATE TABLE BusinessEventsDefinition;
+END
+--CDS Unlink Various Tables END
+ 
+ 
+--Remove all attachment references as storage account is not copied. Approved by Tariq Bell.
+UPDATE t1
+SET t1.storageproviderid = 0
+     , t1.accessinformation = ''
+     , t1.modifiedby = 'NonProdRestore'
+     , t1.modifieddatetime = getdate()
+FROM docuvalue t1 
+WHERE t1.storageproviderid = 1
+ 
+-- RETAILTRANSACTIONSERVICEPROFILE
+DECLARE @MIGRATIONVALUE NVARCHAR(50)
+SET @MIGRATIONVALUE = N'https://MIGRATION_VALUE'
+ 
+IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS 
+  WHERE TABLE_NAME = 'RETAILTRANSACTIONSERVICEPROFILE' 
+  AND COLUMN_NAME = 'AzureResource')
+BEGIN
+  EXECUTE ('UPDATE dbo.[RETAILTRANSACTIONSERVICEPROFILE] SET ServiceHostUrl = ''' + @MIGRATIONVALUE + ''' , AzureResource = ''' + @MIGRATIONVALUE + ''' ')
+END
+ELSE
+BEGIN
+  EXECUTE ('UPDATE dbo.[RETAILTRANSACTIONSERVICEPROFILE] SET ServiceHostUrl = ''' + @MIGRATIONVALUE + '''  ')
+END
+ 
+-- RETAILCHANNELPROFILEPROPERTY
+UPDATE 
+  dbo.[RETAILCHANNELPROFILEPROPERTY]
+SET 
+  [VALUE] = N'https://MIGRATION_VALUE'
+WHERE
+  [VALUE] LIKE '%dynamics.com'
+ 
+ 
+UPDATE 
+  dbo.[RETAILCHANNELPROFILEPROPERTY]
+SET 
+  [VALUE] = N'https://MIGRATION_VALUE/Commerce'
+WHERE
+  [VALUE] LIKE '%dynamics.com/Commerce'
+ 
+ 
+UPDATE 
+  dbo.[RETAILCHANNELPROFILEPROPERTY]
+SET 
+  [VALUE] = N'https://MIGRATION_VALUE/MediaServer'
+WHERE
+  [VALUE] LIKE '%dynamics.com/MediaServer'
+ 
+ 
+-- RETAILCONNDATABASEPROFILE (all rows)
+UPDATE
+  dbo.[RETAILCONNDATABASEPROFILE]
+SET
+  [CONNECTIONSTRING] = NULL
+ 
+    -- RETAILIDENTITYPROVIDER 
+UPDATE
+    dbo.[RETAILIDENTITYPROVIDER]
+SET
+    [ISSUER] = N'https://sts.windows-ppe.net/MIGRATION_VALUE_' + SUBSTRING(CONVERT(nvarchar(50), NEWID()), 1, 8) + '/'
+WHERE
+    [NAME] = N'Azure AD'
+ 
+UPDATE
+    dbo.[RETAILIDENTITYPROVIDER]
+SET
+    [ISSUER] = N'https://MIGRATION_VALUE_' + SUBSTRING(CONVERT(nvarchar(50), NEWID()), 1, 8) + '/auth'
+WHERE
+    [NAME] = N'Commerce Identity Provider'
+ 
+UPDATE 
+  dbo.[RETAILHARDWAREPROFILE]
+SET
+  [SECUREMERCHANTPROPERTIES] = NULL
+ 
+UPDATE 
+  dbo.[CREDITCARDACCOUNTSETUP]
+SET
+  [SECUREMERCHANTPROPERTIES] = NULL
+ 
+UPDATE 
+  dbo.[RETAILCHANNELPAYMENTCONNECTORLINE]
+SET
+  [SECUREMERCHANTPROPERTIES] = NULL
+ 
+--FULLTEXT STOP LIST REMOVAL
+-------------------------------------------------------------------------------------
+ 
+-- ALTER FULLTEXT INDEX ON [TableName] SET STOPLIST = SYSTEM'
+DECLARE @_SQLFullTextStopList NVARCHAR(4000)
+IF object_id('tempdb..#tmpsetstoplist') IS NOT NULL
+DROP TABLE #tmpsetstoplist;
+ 
+CREATE TABLE #tmpsetstoplist (
+TableName [nvarchar] (250)
+);
+ 
+DECLARE cur CURSOR
+FOR select object_NAME(sys.fulltext_indexes.object_id) as TableName from sys.fulltext_indexes where stoplist_id != 0
+ 
+OPEN cur;
+DECLARE @TableName [nvarchar](250);
+FETCH NEXT FROM cur INTO @TableName;
+ 
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    INSERT INTO #tmpsetstoplist (TableName)
+    VALUES (@TableName);                
+    FETCH NEXT
+    FROM cur
+    INTO @TableName;
+END;
+CLOSE cur;
+DEALLOCATE cur;
+ 
+DECLARE cur CURSOR
+FOR SELECT TableName FROM #tmpsetstoplist;
+ 
+OPEN cur;
+FETCH NEXT FROM cur INTO @TableName;
+ 
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @_SQLFullTextStopList = N'ALTER FULLTEXT INDEX ON ' + QUOTENAME(@TableName) + ' SET STOPLIST = SYSTEM'
+    PRINT (@_SQLFullTextStopList)
+    EXEC SP_EXECUTESQL @_SQLFullTextStopList
+    FETCH NEXT
+    FROM cur
+    INTO @TableName;
+END;
+CLOSE cur;
+DEALLOCATE cur;
+ 
+-------------------------------------------------------------------------------------
+ 
+-- DROP FULLTEXT STOPLIST [FullTextStopListName];
+ 
+IF object_id('tempdb..#dropfulltextstoplist') IS NOT NULL
+DROP TABLE #dropfulltextstoplist;
+ 
+CREATE TABLE #dropfulltextstoplist (
+StopListName [nvarchar] (250)
+);
+ 
+DECLARE cur CURSOR
+FOR select name from sys.fulltext_stoplists
+ 
+OPEN cur;
+DECLARE @StopListName [nvarchar](250);
+FETCH NEXT FROM cur INTO @StopListName;
+ 
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    INSERT INTO #dropfulltextstoplist (StopListName)
+    VALUES (@StopListName);                
+ 
+    FETCH NEXT
+    FROM cur
+    INTO @StopListName;
+END;
+CLOSE cur;
+DEALLOCATE cur;
+ 
+DECLARE cur CURSOR
+FOR SELECT StopListName FROM #dropfulltextstoplist;
+ 
+OPEN cur;
+FETCH NEXT FROM cur INTO @StopListName;
+ 
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @_SQLFullTextStopList = N'DROP FULLTEXT STOPLIST ' + QUOTENAME(@StopListName) + ';'
+    PRINT (@_SQLFullTextStopList)
+    EXEC SP_EXECUTESQL @_SQLFullTextStopList
+    FETCH NEXT
+    FROM cur
+    INTO @StopListName;
+END;
+CLOSE cur;
+DEALLOCATE cur;
+--END FULLTEXT STOPLIST REMOVAL
+ 
+ 
+ 
+-- Start script: Turn off DMF change tracking for all entities
+ 
+BEGIN TRY
+ 
+-- 1. Find and drop triggers
+DECLARE TriggerCursor CURSOR
+FOR SELECT TriggerName FROM AifSqlCtTriggers
+ 
+OPEN TriggerCursor
+ 
+DECLARE @TriggerName NVARCHAR(200)
+DECLARE @SqlStmt NVARCHAR(1000)
+ 
+FETCH NEXT FROM TriggerCursor INTO @TriggerName
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @SqlStmt = 'DROP TRIGGER ' + @TriggerName
+    PRINT @SqlStmt
+    EXECUTE sp_executesql @SqlStmt
+    FETCH NEXT FROM TriggerCursor INTO @TriggerName
+END
+ 
+CLOSE TriggerCursor
+DEALLOCATE TriggerCursor
+ 
+-- 2. Delete rows from AifSqlCtTriggers
+DELETE AifSqlCtTriggers WHERE Scope LIKE '%Export'
+ 
+ 
+-- 3. Turn off table level change tracking
+DECLARE TableCursor CURSOR
+FOR SELECT TableName FROM AifSqlChangeTrackingEnabledTables 
+ 
+OPEN TableCursor
+ 
+DECLARE @TableName1 NVARCHAR(162)
+ 
+FETCH NEXT FROM TableCursor INTO @TableName1
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @SqlStmt = 'ALTER TABLE ' + @TableName1 + ' DISABLE CHANGE_TRACKING'
+    PRINT @SqlStmt
+    EXECUTE sp_executesql @SqlStmt
+    FETCH NEXT FROM TableCursor INTO @TableName1
+END
+ 
+CLOSE TableCursor
+DEALLOCATE TableCursor
+ 
+-- 4. Clean up tables
+DELETE FROM AIFSqlChangeTrackingEnabledTables
+ 
+DELETE FROM AIFSqlCdcEnabledTables WHERE Scope LIKE '%Export'
+ 
+UPDATE DMFEntity SET DMFChangeTrackingType = 0
+ 
+END TRY
+BEGIN CATCH
+    PRINT 'exception happened'
+    SELECT 
+        ERROR_NUMBER() AS ErrorNumber  
+        ,ERROR_SEVERITY() AS ErrorSeverity  
+        ,ERROR_STATE() AS ErrorState  
+        ,ERROR_PROCEDURE() AS ErrorProcedure  
+        ,ERROR_LINE() AS ErrorLine  
+        ,ERROR_MESSAGE() AS ErrorMessage; 
+END CATCH
+ 
+-- End script: Turn off DMF change tracking for all entities
+"" that is from Microsoft
+
+2- After running the above successfully, you should add the following changes:
+  2-1: In the root folder of the Retailserver-->web.config--> Check this value in Retail Server web.config: <add key="DataAccess.DbServer" value="localhost" /> and change the localhost
+  to the "machineNmae" or "Hostname"
+  2-2: C:\RetailServer\webroot\bin\CommerceRunTime.Config
+    Locate this line: <add key="audienceUrn" value="spn:00000015-0000-0000-c000-000000000000" /> and change its value to your clientid of your server.
+
+3- go to lcs--> deployable package--> download the Retail Environment Reprovisioning Retarget 
+  3-1: Unzip the mentioned file 
+  3-2: Open CMD as admin and run the following commands to install that package on your dev one box machine.
+  3-3: cd to the folder and run:  AXUpdateInstaller.exe generate -runbookid="Package-00130-runbook" -topologyfile="DefaultTopologyData.xml" -servicemodelfile="DefaultServiceModelData.xml" -runbookfile="Package-00130-runbook.xml"
+  3-4: An xml file would be generated after running the above.
+  3-4: run --> AXUpdateInstaller.exe import -runbookfile=Package-00130-runbook.xml
+  3-5: run --> AXUpdateInstaller.exe execute -runbookid=Package-00130-runbook
+  ** the 3-5 step has two seteps embede. if you have error on the second step(retarget retail server, you should run it manually, otherwise go to the next step)
+  3-6: Run --> C:\Users\Dadmohammadi.Danial\ddmPro\RetailServer\EnvironmentRetarget> .\RetargetRetailServer.ps1 -- poweshell
+  ** After running the retarget, the conncetion string in the channel database would be displyed.
+
+4- Go to d365fo and run the initilaize in the commerce parameters form.
+5- Go to initilaize commerce schedule paramaters with the delete existing check mark.
+6- restart the server or retail server or IIS
+7- Sent the full job of the 9999. They must be "Applied".
