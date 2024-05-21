@@ -10,7 +10,7 @@
         FormControl vendAcc = element.control(element.controlId(formControlStr(TrvExpenses,ARVendAccountFormString)));
         
         @@@@@@@@@@ Or if you are in the form @@@@@@@@@@@@
-        FormGroupControl arDefaultPO = this.design().controlName(formControlStr(PurchCreateOrder,ARArtal));--after init()
+        FormGroupControl arDefaultPO = this.design().controlName(formControlStr(PurchCreateOrder,ARArtal));--after next
         @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         @@@@@@@@@@ Or if you are in the form datasource @@@@@@@@@@@
          purchTable = this.cursor();
