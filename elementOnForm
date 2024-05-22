@@ -1,4 +1,7 @@
-element on the form = (FormRun formRun = sender.formRun();)
+element on the form :
+FormRun formRun = sender.formRun();
+or
+formRun = sender as FormRun;
 
 ex1:
 formRun.design().controlName(formControlStr(RetailInventItemLabelReportSetup, RBOInventItemLabelReportSetup_ReportName)))
