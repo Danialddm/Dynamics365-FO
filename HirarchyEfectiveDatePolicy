@@ -1,0 +1,85 @@
+static class OKCOHierarchyPublishCloseForm_Form_Event
+
+{
+
+   [FormControlEventHandler(formControlStr(HierarchyPublishAndCloseForm, hierarchyPublishDate), FormControlEventType::Modified)]
+
+   public static void hierarchyPublishDate_OnModified(FormControl sender, FormControlEventArgs e)
+
+   {
+
+       object                  formRunCaller;
+
+       Array                   dateArray;
+
+       OMMultipleHierarchy     omMultipleHierarchy;
+
+       OMOrganizationHierarchy omHier, hierarchyHelper;
+
+       TmpHierarchyDesigner    TmpHierarchyDesigner;
+
+       OMOrganizationHierarchy omOH;
+
+       container               dateContainer;
+
+       utcdatetime             utcDT;
+
+       int i;
+
+       ;
+
+       formRunCaller = sender.formRun().args().caller();
+
+       omHier = formRunCaller.parmOrgHierarchy();
+
+       omMultipleHierarchy = omHier.parmHierarchyType();
+
+       omOH = new OMOrganizationHierarchy(omMultipleHierarchy);
+
+       dateArray = omOH.parmHierarchyType(omMultipleHierarchy).retrieveAllDates();
+
+       if(dateArray.lastIndex())
+
+       {
+
+           for( i=1; i <= dateArray.lastIndex(); i++)
+
+           {
+
+               dateContainer = dateArray.value(i);
+
+               utcDT = conpeek(dateContainer, 2);
+
+               utcDT = DateTimeUtil::applyTimeZoneOffset(utcDT, DateTimeUtil::getUserPreferredTimeZone());
+
+           }
+
+           if(str2Date(sender.valueStr(),321) != DateTimeUtil::date(DateTimeUtil::addDays(utcDT,1)))
+
+           {
+
+               throw error('The valid date is only tomorrow from the last effective date published.');
+
+           }
+
+       }
+
+       else
+
+       {
+
+           if(str2Date(sender.valueStr(),321) != DateTimeUtil::date(DateTimeUtil::minValue()))
+
+           {
+
+               throw error('The valid date is only minimum date.');
+
+           }
+
+       }
+
+   }
+
+ 
+
+}
