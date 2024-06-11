@@ -1,0 +1,14 @@
+//add query for form datasource 
+[DataSource]    class OKCOSERVICEDBLOG 
+{        /// <summary>        /// filter data log         /// </summary>   
+  public void executeQuery()     
+  {           
+  qbds = this.query().dataSourceTable(tableNum(OKCOSERVICEDBLOG));  
+  qbds.clearRanges();      
+  qbr = qbds.addRange(fieldnum(OKCOSERVICEDBLOG, ObjectID),1,QueryRangeType:: FullText); //--//or you can use like insted full text.
+  qbr.value('USMF-000093');          
+  qbdr.value(queryValue('USMF-000093'));    
+  //OKCOSERVICEDBLOG_ds.executeQuery();       
+  super();       
+  }    
+}
