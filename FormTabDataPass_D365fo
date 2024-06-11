@@ -1,0 +1,2 @@
+1- your tables for each tab must have a valid relation.
+2- In form datasource, you must set the join source in DS properties at the line level.
