@@ -1,0 +1,15 @@
+In X++ select statements, querying normal and date-effective tables differs with the addition of the ValidTimeState keyword. 
+This keyword allows fetching records effective on a specific date or within a period of time.
+
+public static void main(Args _args) 
+{           
+  hcmPositionWorkerAssignment                       hcmPositionWorkerAssignment; 
+  ;        
+  date datefrom= DateTimeUtil::date(DateTimeUtil::minValue()); 
+  date dateTo= DateTimeUtil::date(DateTimeUtil::maxValue());   
+  while select validtimestate(datefrom, dateTo) hcmPositionWorkerAssignment
+  where  hcmPositionWorkerAssignment.Worker == 22565424242    
+    {              
+      info(strFmt("%1",hcmPositionWorkerAssignment.RecId));   
+    }       
+}
