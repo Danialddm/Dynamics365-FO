@@ -1,0 +1,72 @@
+[DataContract]
+internal final class OKCOHRNewHireResponse
+{    
+private str             result;
+private int exitCode; 
+public static OKCOHRNewHireResponse construct(int _exitCode = 0, str _result = '') 
+{      
+OKCOHRNewHireResponse contract = new OKCOHRNewHireResponse();  
+contract.initialize(_exitCode, _result);  
+return contract;   
+}     
+private void initialize(int _exitCode, str _result) 
+{        
+this.exitCode(_exitCode);  
+this.ResultResponse(_result); 
+}     
+[DataMemberAttribute("result")]  
+public str ResultResponse(str _result = result) 
+{      
+result = _result; 
+return result;   
+}     
+[DataMemberAttribute("exitCode")]  
+public int exitCode(int _exitCode = exitCode) 
+{      
+exitCode = _exitCode;    
+return exitCode; 
+}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////
+[DataContractAttribute]
+internal final class OKCOHRNewHireResponseList
+{    
+List newHireResponseList;
+protected void new()  
+{       
+newHireResponseList = new List(Types::Class); 
+}      
+public static OKCOHRNewHireResponseList construct() 
+{        
+return new OKCOHRNewHireResponseList();  
+}      
+public void addToList(OKCOHRNewHireResponse _ResponseDataContract)  
+{      
+newHireResponseList.addEnd(_ResponseDataContract);  
+}      
+[DataMember,AifCollectionType('return',Types::Class,classStr(OKCOHRNewHireResponse)), AifCollectionType('_newHireResList',Types::Class,classStr(OKCOHRNewHireResponse))] 
+public List parmHrRelocationResponseList(List _newHireResList = newHireResponseList)  
+{      
+newHireResponseList = _newHireResList;        
+return newHireResponseList;
+}
+}
+//////////////////////////////////////////////////////////////////////////////////////////call the list/////////
+internal final class OKCOHRNewHireModelService
+{    
+  public OKCOHRNewHireResponseList NewHire(OKCOHRNewHireContractReq Params)  
+  {
+     responseList.addToList(this.addResponseLine(200,strFmt('Position "%1" has been assigned successfully to the worker "%2". Employment type is updated too.',_OKCOHRNewHireWorkerObj.parmpositionRecId(), _OKCOHRNewHireWorkerObj.parmworkerRecId())));
+    return responselist;
+  }
+  public OKCOHRNewHireResponse addResponseLine(int _exitCode,str _result) 
+  {        
+  OKCOHRNewHireResponse Resline = new OKCOHRNewHireResponse();  
+  Resline.exitCode(_exitCode);   
+  Resline.ResultResponse(_result);     
+  return Resline;   
+  }
+
+}
+
+
