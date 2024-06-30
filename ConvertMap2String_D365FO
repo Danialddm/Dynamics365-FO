@@ -1,0 +1,11 @@
+public str map2str(Map _map, str _separator = ', ') 
+{     
+str ret;       
+MapEnumerator e = _map.getEnumerator();   
+while (e.moveNext())       
+{          
+if (ret) ret += _separator;   
+ret += any2str(e.currentKey() + ':' + int642Str(e.currentValue()));   
+}     
+return ret;   
+}
