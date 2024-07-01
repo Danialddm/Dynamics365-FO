@@ -1,3 +1,6 @@
+important tip: the try and catch statement must not be inside the transaction(ttsbegin and ttscommit) 
+except the catch inside of a transaction scope, namely Update Conflict and Duplicate Key.
+------------------------------------------------------------------------------------
 To grab the info message in the UI:
 catch
 { 
