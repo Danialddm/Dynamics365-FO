@@ -22,3 +22,44 @@ Info(strFmt('LP=%1,avail= %2,total= %3',lp.LicensePlateId,onhand,onhandT));
 //}   
 } 
 }
+////////////////////////////////////////////////////////Or you can use this view///////////////////////////////////////////////////////////
+CREATE view [dbo].[vw_InventOnHandBySiteWarehouseLocationLicensePlate] as
+ 
+select  'INVENTSUM_ITEMID' = iSum.ITEMID,
+        'INVENTSUM_DATAAREAID' = iSum.DATAAREAID,
+        'INVENTSUM_PARTITION' = iSum.PARTITION,
+        'INVENTSUM_ARRIVED' = sum(iSum.ARRIVED),
+        'INVENTSUM_AVAILORDERED' = sum(iSum.AVAILORDERED),
+        'INVENTSUM_AVAILPHYSICAL' = sum(iSum.AVAILPHYSICAL),
+        'INVENTSUM_DEDUCTED' = sum(iSum.DEDUCTED),
+        'INVENTSUM_ONORDER' = sum(iSum.ONORDER),
+        'INVENTSUM_ORDERED' = sum(iSum.ORDERED),
+        'INVENTSUM_PHYSICALINVENT' = sum(iSum.PHYSICALINVENT),
+        'INVENTSUM_PHYSICALVALUE' = sum(iSum.PHYSICALVALUE),
+        'INVENTSUM_PICKED' = sum(iSum.PICKED),
+        'INVENTSUM_POSTEDQTY' = sum(iSum.POSTEDQTY),
+        'INVENTSUM_POSTEDVALUE' = sum(iSum.POSTEDVALUE),
+        'INVENTSUM_QUOTATIONISSUE' = sum(iSum.QUOTATIONISSUE),
+        'INVENTSUM_QUOTATIONRECEIPT' = sum(iSum.QUOTATIONRECEIPT),
+        'INVENTSUM_RECEIVED' = sum(iSum.RECEIVED),
+        'INVENTSUM_REGISTERED' = sum(iSum.REGISTERED),
+        'INVENTSUM_RESERVORDERED' = sum(iSum.RESERVORDERED),
+        'INVENTSUM_RESERVPHYSICAL' = sum(iSum.RESERVPHYSICAL),
+        'INVENTDIM_INVENTSITEID' = id.INVENTSITEID,
+        'INVENTDIM_INVENTLOCATIONID' = id.INVENTLOCATIONID,
+        'INVENTDIM_LICENSEPLATEID' = id.LICENSEPLATEID,
+        'INVENTDIM_WMSLOCATIONID' = id.WMSLOCATIONID
+from InventSum iSum
+inner join inventDim id on id.inventDimId = iSum.inventDimId
+                       and id.dataareaid = iSum.dataareaid
+                       and id.partition = iSum.partition
+where iSum.Closed = 0 --NoYes::No                                 
+group by    iSum.PARTITION,
+            iSum.DATAAREAID,
+            iSum.ITEMID,
+            id.INVENTSITEID,
+            id.INVENTLOCATIONID,
+            id.LICENSEPLATEID,
+            id.WMSLOCATIONID
+ 
+GO
