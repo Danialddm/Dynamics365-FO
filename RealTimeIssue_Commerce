@@ -1,1 +1,2 @@
 If you have an issue for callint the RTS, it is red on health check, you should run the retail tenant update tool again using powershell ISE.
+After running, if we have an error about job sending or azure blob storage, we should run the retail retarget tool(for ruuning we should add -trustedcertificate to all section).
