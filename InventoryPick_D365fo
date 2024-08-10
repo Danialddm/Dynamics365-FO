@@ -1,0 +1,46 @@
+static void JobPick(Args _args)
+{
+    Query inventTransQuery;
+    QueryRun qr;
+    QueryBuildDataSource qbds;
+    InventTrans inventTrans;
+    InventDim inventDim;
+    InventTransOrigin inventTransOrigin;
+    TmpInventTransWMS tmpInventTransWMS;
+    InventTransWMS_Pick inventTransWMS_Pick;
+    SalesLine salesLine = SalesLine::findInventTransId('014417');
+    
+    inventTransQuery = new Query();
+    qbds = inventTransQuery.addDataSource(tableNum(InventTrans));
+    qbds.addRange(fieldNum(InventTrans, StatusIssue)).value(queryValue(StatusIssue::ReservPhysical));
+    qbds = qbds.addDataSource(tableNum(InventTransOrigin));
+    qbds.relations(true);
+    qbds.joinMode(JoinMode::InnerJoin);
+    qbds.addRange(fieldNum(InventTransOrigin, InventTransId)).value(salesLine.InventTransId);
+    
+    qr = new QueryRun(inventTransQuery);
+    while (qr.next())
+    {
+        inventTrans = qr.get(tableNum(InventTrans));
+        inventTransOrigin = qr.get(tableNum(InventTransOrigin));
+        
+        // Set inventory dimensions for picking
+        inventDim = inventDim::find(inventTrans.InventDimId);
+        inventDim.wmslocationId = "06A01R3S1B";   
+        inventDim.LicensePlateId = "LP_61_A0001";
+        inventDim = inventDim::findOrCreate(inventDim);
+        
+        tmpInventTransWMS.clear();
+        
+        inventTransWMS_Pick = InventTransWMS_Pick::newStandard(tmpInventTransWMS, inventTransQuery);
+        
+        tmpInventTransWMS.initFromInventTrans(InventTrans);
+        tmpInventTransWMS.initFromInventTransOrigin(inventTransOrigin);
+        tmpInventTransWMS.initFromInventDim(inventDim);
+        
+        tmpInventTransWMS.InventQty = -inventTrans.Qty;
+        
+        inventTransWMS_Pick.writeTmpInventTransWMS(tmpInventTransWMS);
+        inventTransWMS_Pick.updateInvent();    
+    }
+}
