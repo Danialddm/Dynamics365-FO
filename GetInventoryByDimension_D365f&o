@@ -1,0 +1,24 @@
+internal final class ddm_RunnableClass2
+{     
+public static void main(Args _args)  
+{        //changecompany('USMF')       
+//{            InventOnhand    inventOnhand;    
+InventDim       inventDim;       
+InventDimParm   inventDimParm;       
+Qty onhand, onhandT;        
+WHSLicensePlate lp;       
+while select lp      
+{                
+inventDim = inventDim::find('000605'); 
+inventDim.wmslocationId = 'FL-001';     
+inventDim.LicensePlateId = lp.LicensePlateId;   
+inventDim = inventDim::findOrCreate(inventDim);  
+inventDimParm.initFromInventDim(inventDim);    
+inventOnhand = InventOnhand::newParameters('A0001', inventDim, inventDimParm);  
+onhand = inventOnhand.availPhysical();          
+onhandT = inventOnhand.availTotal();        
+Info(strFmt('LP=%1,avail= %2,total= %3',lp.LicensePlateId,onhand,onhandT));  
+}      
+//}   
+} 
+}
