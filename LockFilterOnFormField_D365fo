@@ -1,0 +1,14 @@
+public void executeQuery()//datasource level
+
+{
+   QueryBuildDataSource qbds;
+   ;
+
+   qbds = this.query().dataSourceTable(tableNum(InventItemSalesSetup));
+
+   qbds.addRange(fieldnum(InventItemSalesSetup, HighestQty)).value('!0');
+
+   qbds.addRange(fieldnum(InventItemSalesSetup,HighestQty)).status(rangestatus::Locked);
+ 
+   super();
+}
