@@ -1,0 +1,2 @@
+For Store Commerce for Web you have to deploy the contents of the RetailCloudPOS folder 
+to the following location K:\RetailCloudPos\WebRoot\Extensions. Reset IIS and the extension will be loaded.
