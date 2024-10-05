@@ -1,0 +1,10 @@
+To expose internal objects and methods to another model use a text editor and edit the model descriptor file, 
+add the models that should have access to the internals by adding them to the <InternalsVisibleTo> tag. 
+
+For see for example example K:\AosService\PackagesLocalDirectory\ApplicationSuite\Descriptor\Foundation.xml . 
+After adding, if you have still an error, build the ApplicationSuite once.
+
+Another tips:
+Common issue with internals occur when they are used in forms and table objects which are public objects. 
+The compiler will throw errors if variable of an internal type is added as public as it a more open access modifier than internal. 
+The simple way to fix the issue is to change the variable to private.
