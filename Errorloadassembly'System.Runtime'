@@ -1,0 +1,4 @@
+error in commerce new packege in retail server ext foldr:
+Cannot load file or assembly 'System.Runtime'
+soloution:
+change the targer .Net version in commerce project based on the web.config of the retail server.
