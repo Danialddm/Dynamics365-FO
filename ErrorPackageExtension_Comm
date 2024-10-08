@@ -1,0 +1,4 @@
+If you have an issue after openning the comm about the "unable to load the axtension check manifest.json and ..."
+first of all check the manifest file.
+Check the API trigger and check the name in it and manifest file.
+if they were ok, reinstall and install the POS installer onece (bt powerShell).-->powershell delete the registry files whereas the install does not.
