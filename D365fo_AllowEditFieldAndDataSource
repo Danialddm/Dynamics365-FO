@@ -13,7 +13,7 @@ public static class AREcoResProductDetailsExtended_Extension
         FormControl brandName = design.controlName(formControlStr(EcoResProductDetailsExtended, ARBrandName));
         brandName.allowEdit(true);
     }
-
+////////////////////////////////////////
     [FormDataSourceEventHandler(formDataSourceStr(EcoResProductDetailsExtended, EcoResProduct), FormDataSourceEventType::Activated)]
     public static void EcoResProduct_OnActivated(FormDataSource sender, FormDataSourceEventArgs e)
     {
@@ -32,4 +32,17 @@ public static class AREcoResProductDetailsExtended_Extension
             ttscommit;
         }
     }
+///////////////////////////////////////////
+    [FormEventHandler(formStr(RetailGiftCardTable), FormEventType::Initialized)]
+public static void RetailGiftCardTable_OnInitializing(xFormRun sender, FormEventArgs e) 
+{    //sometimes we need to edit the form view   
+    sender.design().viewEditMode(ViewEditMode::Edit);  
+    FormDataSource fds = sender.dataSource(formDataSourceStr(RetailGiftCardTable,RetailGiftCardTable));   
+    fds.allowEdit(true);      
+    // set all datasource fields to non editable   
+    allowEditFieldsOnFormDS_W(fds, false);  
+    fds.object(fieldNum(RetailGiftCardTable, Category)).allowEdit(true);   
+    fds.object(fieldNum(RetailGiftCardTable, PersID)).allowEdit(true);   
+}
+
 }
