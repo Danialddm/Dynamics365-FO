@@ -1,0 +1,96 @@
+/// <summary>
+/// Using OnValidatingField Event handler . How to get the record and how to do validation and how to send validation result. Expand the Table > Events > Right click on OnValidatingField and copy method and paste it inside class.
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+[DataEventHandler(tableStr(VendTable), DataEventType::ValidatingField)]
+public static void VendTable_onValidatingField(Common sender, DataEventArgs e)
+{
+    VendTable VendTable = sender as VendTable; // Code to get the buffer
+    boolean ret = true;
+ 
+    ValidateFieldEventArgs args = e as ValidateFieldEventArgs; // Code to get args
+ 
+    switch (args.parmFieldId())
+    {
+        case fieldNum(VendTable, VendorRank):
+        {
+            if(VendTable.VendorRank == 10)
+            {
+                ret = checkFailed("Rank 10 is worst rank you can get");  // Just a validation to display on user interface
+            }
+        }
+        break;
+    }
+ 
+    args.parmValidateResult(ret); // Code to send the validation result.**********************@@@@@@*******************************
+}
+ 
+ 
+    /// <summary>
+/// Using OnValidatedField eventhandler . How to get the record and how to do validation and how to send validation result. Expand the Table > Events > Right click on onValidatedField and copy method and paste it inside class.
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+[DataEventHandler(tableStr(VendTable),DataEventType::ValidatedField)]
+public static void VendTable_onValidatedField(Common sender, DataEventArgs e)
+{
+ 
+    VendTable VendTable = sender as VendTable; // Code to get the buffer
+    boolean ret = true;
+ 
+    ValidateFieldEventArgs args = e as ValidateFieldEventArgs; // Code to get args
+ 
+    switch (args.parmFieldId())
+    {
+        case fieldNum(VendTable, VendorRank):
+        {
+            if(VendTable.VendorRank == 20)
+            {
+                ret = checkFailed("Rank 20 is worst rank you can get - OnValidated"); // Just a validation to display on user interface
+            }
+        }
+        break;
+    }
+ 
+    args.parmValidateResult(ret); // Code to send the validation result.
+}
+ 
+ 
+ 
+ 
+ 
+     /// <summary>
+///  This method is for the ValidateField on the Table>Methods. Expand Table > Methods > Right click on ValidateField > COpy event handler for Pre.
+/// </summary>
+/// <param name="args"></param>
+[PreHandlerFor(tableStr(VendTable), tableMethodStr(VendTable, validateField))]
+public static void VendTable_Pre_validateField(XppPrePostArgs args)
+{
+    VendTable VendTable = args.getThis();  // Code to get buffer
+    boolean ret;
+ 
+    if(VendTable.VendorRank == 10)
+    {
+        ret = checkFailed("Rank 10 is worst rank you can get - Table Method ValidateField");
+    }
+    args.setReturnValue(ret); // Code to send the validation result.
+}
+ 
+ 
+    /// <summary>
+/// This method is for the ValidateWrite on the Table>Methods. Expand Table > Methods > Right click on ValidateWrite > COpy event handler for Pre.
+/// </summary>
+/// <param name="args"></param>
+[PreHandlerFor(tableStr(VendTable), tableMethodStr(VendTable, validateWrite))]
+public static void VendTable_Pre_validateWrite(XppPrePostArgs args)
+{
+    VendTable VendTable = args.getThis(); // Code to get buffer
+    boolean ret;
+ 
+    if(VendTable.VendorRank == 20)
+    {
+        ret = checkFailed("Rank 20 is worst rank you can get - Table Method ValidateWrite");
+    }
+    args.setReturnValue(ret); // Code to send the validation result.
+}
