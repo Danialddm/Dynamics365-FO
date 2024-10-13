@@ -1,0 +1,189 @@
+internal final class AmiraRechargeOneRetailGiftCard
+
+{
+
+   /// <summary>
+
+   /// Recharge the desired balnce for gift card.
+
+   /// </summary>
+
+   public static void main(Args _args)
+
+   {
+
+       DialogGroup      dlgUploadGroup;
+
+       DialogField balance,cardNum;
+
+       FormBuildControl formBuildControl;
+
+       HcmWorker _hcmworker;
+
+       RetailGiftCardTable _retailgiftcardtable;
+
+       str cardId, balanceAmount;
+
+       FormBuildStringControl control;
+
+       AmiraRechargeOneRetailGiftCard amiraRechargeOneRetailGiftCard = new AmiraRechargeOneRetailGiftCard();
+
+       ;
+
+ 
+
+       Dialog dialog = new Dialog("Recharge the balance of the one gift card");
+
+       dlgUploadGroup = dialog.addGroup("Enter the values.");
+
+       formBuildControl = dialog.formBuildDesign().control(dlgUploadGroup.name());
+
+       cardNum = dialog.addField(extendedTypeStr(RetailEntryId),'Card number');
+
+       balance = dialog.addField(extendedTypeStr(AmountMST),'New balance');
+
+       control = cardNum.control();
+
+       control.registerOverrideMethod(methodStr(FormStringControl,lookup),methodStr(AmiraRechargeOneRetailGiftCard,cardNumLookup),amiraRechargeOneRetailGiftCard);
+
+       if (dialog.run() && dialog.closedOk())
+
+       {
+
+           cardId = cardNum.value();
+
+           balanceAmount = balance.value();
+
+           _retailgiftcardtable = RetailGiftCardTable::find(cardId);
+
+           if(_retailgiftcardtable)
+
+           {
+
+               if(_retailgiftcardtable.balance() != 0)
+
+               {
+
+                   ttsBegin;
+
+                   RetailGiftCardTransactions::add(
+
+                       RetailGiftCardOperation::Adjust,
+
+                       _retailgiftcardtable.entryId,
+
+                   0,
+
+                   '',
+
+                   '',
+
+                   '',
+
+                   '',
+
+                   (-1) * _retailgiftcardtable.balance(),
+
+                   DateTimeUtil::getSystemDate(DateTimeUtil::getUserPreferredTimeZone()),
+
+                   DateTimeUtil::getTimeNow(DateTimeUtil::getUserPreferredTimeZone()));
+
+                   ttsCommit;
+
+                   ttsBegin;
+
+                   RetailGiftCardTransactions::add(
+
+                       RetailGiftCardOperation::Issue,
+
+                       _retailgiftcardtable.entryId,
+
+                   0,
+
+                   '',
+
+                   '',
+
+                   '',
+
+                   '',
+
+                   str2num(balanceAmount),
+
+                   DateTimeUtil::getSystemDate(DateTimeUtil::getUserPreferredTimeZone()),
+
+                   DateTimeUtil::getTimeNow(DateTimeUtil::getUserPreferredTimeZone()));
+
+                   ttsCommit;
+
+                   info(strfmt('New balance of gift Card ID "%1" is recharged successfully.',cardId));
+
+               }
+
+               else
+
+               {
+
+                   ttsBegin;
+
+                   RetailGiftCardTransactions::add(
+
+                       RetailGiftCardOperation::Issue,
+
+                       _retailgiftcardtable.entryId,
+
+                   0,
+
+                   '',
+
+                   '',
+
+                   '',
+
+                   '',
+
+                   str2num(balanceAmount),
+
+                   DateTimeUtil::getSystemDate(DateTimeUtil::getUserPreferredTimeZone()),
+
+                   DateTimeUtil::getTimeNow(DateTimeUtil::getUserPreferredTimeZone()));
+
+                   ttsCommit;
+
+                   info(strfmt('New balance of gift Card ID "%1" is recharged.',cardId));
+
+               }
+
+           }
+
+           else
+
+           {
+
+               info(strfmt('Gift Card ID %1 does not exist in the Gift Card list',cardId));
+
+           }
+
+       }
+
+   }
+
+   public void cardNumLookup(FormStringControl _control)
+
+   {
+
+       SysTableLookup systablelookup;
+
+ 
+
+       systablelookup = SysTableLookup::newParameters(tablenum(RetailGiftCardTable),_control,true);
+
+       systablelookup.addLookupfield(fieldNum(RetailGiftCardTable,entryid));
+
+       systablelookup.addLookupfield(fieldNum(RetailGiftCardTable,persID));
+
+       systablelookup.performFormLookup();
+
+   }
+
+}
