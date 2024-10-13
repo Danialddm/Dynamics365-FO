@@ -1,0 +1,59 @@
+///to check the table before and after update for any column.
+[ExtensionOf(formControlStr(RetailGiftCardTable, Unlock))]
+internal final class AmiraRetailGiftCard_Frm_Extension
+
+{   
+
+   public void clicked()
+
+   {
+
+       RetailGiftCardTable retailGiftCardTable,retailGiftCardTable_before,retailGiftCardTable_main;
+
+       ;
+
+       FormButtonControl _FormButtonControl_before = any2Object(this) as FormButtonControl;
+
+       FormDataSource RetailGiftCardTable_before_ds = _FormButtonControl_before.FormRun().dataSource(tableStr(RetailGiftCardTable));
+
+       retailGiftCardTable_main = RetailGiftCardTable_before_ds.cursor();
+
+       retailGiftCardTable_before = retailGiftCardTable_main.orig();
+
+ 
+
+       next clicked();//unlock
+
+ 
+
+       FormButtonControl _FormButtonControl = any2Object(this) as FormButtonControl;
+
+       FormDataSource RetailGiftCardTable_ds = _FormButtonControl.FormRun().dataSource(tableStr(RetailGiftCardTable));
+
+       FormDataSource RetailGiftCardTransactions_ds = _FormButtonControl.FormRun().dataSource(tableStr(RetailGiftCardTransactions));
+
+       retailGiftCardTable = RetailGiftCardTable_ds.cursor();
+
+ 
+
+       if(retailGiftCardTable.reserved == NoYes::No && retailGiftCardTable_before.reserved != retailGiftCardTable.reserved)
+
+       {
+
+           return;
+
+       }
+
+       retailGiftCardTable.lockCard();
+
+ 
+
+       RetailGiftCardTable_ds.reread();
+
+       RetailGiftCardTable_ds.refresh();
+
+       RetailGiftCardTransactions_ds.research(true);
+
+   }
+
+}
