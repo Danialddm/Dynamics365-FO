@@ -1,0 +1,6 @@
+Important tip for inserting the InventDimId:
+--------------------------------------------
+You must fill all the dimansions(site,warehouse,location,...) based on the storage dimension group, otherwise it will update the
+new inventdimid generated (by findOrcreate) based on the config of the storage dimension.
+Actually, for creating a new inventdimid, you must fill all dimension related.
+
