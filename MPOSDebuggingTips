@@ -1,3 +1,9 @@
+Disable Just My Code
+Disabling Just My Code can sometimes help capture detailed debugging information in complex applications like D365FO.
+
+    Go to Debug > Options > General and uncheck Enable Just My Code.
+    Restart Visual Studio after making this change.
+
 1- check the soloution and project in Debug status in properties.
 2- when you want to add a process uset the automatic option for selecting the process
 3- The memory window is not required when debugging is activated.
