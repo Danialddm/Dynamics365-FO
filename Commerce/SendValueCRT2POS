@@ -12,7 +12,8 @@ if you are in the trigger that related to the entity no need to call the api, yo
 you shoud use the related api to call the entity:
 export default class RefahYarCreditPaymentPostVoidPaymentTrigger extends PostVoidPaymentTrigger {
    public async execute(options: IPostVoidPaymentTriggerOptions): Promise<void> {
-       let ss: string;
+      let tender: Commerce.Proxy.Entities.TenderLine = options.tenderLines[0];
+      let ss: string;
        if (!ObjectExtensions.isNullOrUndefined(tender) && !ObjectExtensions.isNullOrUndefined(tender.ExtensionProperties))
        {
            let SampleCommerceProperties: ProxyEntities.CommerceProperty[] = tender.ExtensionProperties.filter((extensionProperty: ProxyEntities.CommerceProperty) => {
