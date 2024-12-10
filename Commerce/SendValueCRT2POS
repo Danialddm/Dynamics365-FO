@@ -1,0 +1,48 @@
+in crt, at the request you want to send a value either in trigger or handler:
+you should find the entity name from the equest: entity name in thiss examp: tenderLine
+  --------------------------------------------------------------------------------------
+voidPaymentServiceRequest.TenderLine.ExtensionProperties = voidPaymentServiceRequest.TenderLine.ExtensionProperties ?? new List<CommerceProperty>();
+voidPaymentServiceRequest.TenderLine.ExtensionProperties.Add(new CommerceProperty
+{
+   Key = "ddm",  Value = new CommercePropertyValue { StringValue = "yes daniiii you cannnnn" }
+});
+  --------------------------------------------------------------------------------------
+in POS side, you should use the entity name to access the value:
+if you are in the trigger that related to the entity no need to call the api, you can use the options to call the entity, otherwise
+you shoud use the related api to call the entity:
+export default class RefahYarCreditPaymentPostVoidPaymentTrigger extends PostVoidPaymentTrigger {
+   public async execute(options: IPostVoidPaymentTriggerOptions): Promise<void> {
+       let ss: string;
+       if (!ObjectExtensions.isNullOrUndefined(tender) && !ObjectExtensions.isNullOrUndefined(tender.ExtensionProperties))
+       {
+           let SampleCommerceProperties: ProxyEntities.CommerceProperty[] = tender.ExtensionProperties.filter((extensionProperty: ProxyEntities.CommerceProperty) => {
+                   return extensionProperty.Key === "ddm";
+               });
+           ss = SampleCommerceProperties.length > 0 ? SampleCommerceProperties[0].Value.StringValue : "";
+           alert(ss);
+           }
+           else
+           {
+               ss = "";
+           }
+   }
+}
+---------------------------------------------------------------------------
+**call the api in case of no access to the options:
+  
+let getCartRequest: GetCurrentCartClientRequest<GetCurrentCartClientResponse> = new GetCurrentCartClientRequest<GetCurrentCartClientResponse>();
+return this.context.runtime.executeAsync(getCartRequest).then((value: ICancelableDataResult<GetCurrentCartClientResponse>) => {
+    let cart: Commerce.Proxy.Entities.Cart = (<GetCurrentCartClientResponse>value.data).result;
+    // Gets the extension property from the cart.
+    let sampleExtensionPropertyValue: boolean;
+    if (!ObjectExtensions.isNullOrUndefined(cart) && !ObjectExtensions.isNullOrUndefined(cart.ExtensionProperties)) {
+        let SampleCommerceProperties: ProxyEntities.CommerceProperty[] = cart.ExtensionProperties.filter((extensionProperty: ProxyEntities.CommerceProperty) => {
+            return extensionProperty.Key === "sampleExtensionProperty";
+        });
+        sampleExtensionPropertyValue = SampleCommerceProperties.length > 0 ? SampleCommerceProperties[0].Value.BooleanValue : false;
+    } else {
+        sampleExtensionPropertyValue = false;
+    }
+    //Resolve the promise according to your scenario and method.
+    return Promise.resolve({ canceled: false });
+});
