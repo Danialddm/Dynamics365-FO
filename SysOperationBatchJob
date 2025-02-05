@@ -1,0 +1,143 @@
+internal class AmiraCleanDownloadSysOperationAutoUI extends SysOperationAutomaticUIBuilder
+{
+    private DialogField       storeNumber;
+    AmiraCleanDownloadSysOperationContract   contract;
+    public void postBuild()
+    {
+        contract		= this.dataContractObject() as AmiraCleanDownloadSysOperationContract;
+        storeNumber	= this.bindInfo().getDialogField(contract, methodStr(AmiraCleanDownloadSysOperationContract, parmStoreNum));
+
+        storeNumber.lookupButton(FormLookupButton::Always);
+    }
+
+    public void postRun()
+    {
+        Query		            query		        = new Query();
+        QueryBuildDataSource    qbdsLegalEntity     = query.addDataSource(tablenum(RETAILCONNDATABASEPROFILE));
+
+        qbdsLegalEntity.fields().addField(fieldNum(RETAILCONNDATABASEPROFILE, Name));
+        container selectedFields = [tableNum(RETAILCONNDATABASEPROFILE), fieldNum(RETAILCONNDATABASEPROFILE, Name)];
+        SysLookupMultiSelectCtrl::constructWithQuery(this.dialog().dialogForm().formRun(),
+            storeNumber.control(), query, false, selectedFields);
+    }
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+[DataContractAttribute]  
+[SysOperationContractProcessing(classStr(AmiraCleanDownloadSysOperationAutoUI))]
+internal class AmiraCleanDownloadSysOperationContract implements SysOperationValidatable
+{
+    List              storeNum;
+    utcdatetime       fromDate;
+    utcdatetime       toDate;
+
+    [DataMemberAttribute('Store Number'),
+     SysOperationLabelAttribute(literalStr("Store Number")),
+     AifCollectionType('return', Types::String)]
+    public List parmStoreNum(List _storeNum = storeNum)
+    {
+        storeNum = _storeNum;
+
+        return storeNum;
+    }
+
+    [DataMemberAttribute('From Date'),
+     SysOperationLabelAttribute(literalStr("From Date"))]
+    public utcdatetime parmDateFrom(utcdatetime _fromDate = fromDate)
+    {
+        fromDate =_fromDate;
+        return fromDate;
+    }
+
+    [DataMemberAttribute('To Date'),
+     SysOperationLabelAttribute(literalStr("To Date"))]
+    public utcdatetime parmDateTo(utcdatetime _toDate = toDate)
+    {
+        toDate =_toDate;
+        return toDate;
+    }
+
+    public boolean validate()
+    {
+        boolean isValid = true;
+        if (storeNum.empty())
+        {
+            isValid = checkFailed("Store number is required.");
+        }
+        if(!fromDate)
+        {
+            fromDate = DateTimeUtil::minValue();
+        }
+        if(!toDate)
+        {
+            toDate = DateTimeUtil::maxValue();
+        }
+        return isValid;
+    }
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+internal class AmiraCleanDownloadSysOperationController extends SysOperationServiceController
+{
+    public void new()
+    {
+        super();
+    
+        this.parmClassName(classStr(AmiraCleanDownloadSysOperationService));
+        this.parmMethodName(methodStr(AmiraCleanDownloadSysOperationService, processOperation));
+        this.parmExecutionMode(SysOperationExecutionMode::Asynchronous);
+        this.parmDialogCaption("Batch Job for clearing the download session logs");
+    }
+
+    public ClassDescription caption()
+    {
+        return "Download session cleaner";
+    }
+
+    public static void main(Args args)
+    {
+        AmiraCleanDownloadSysOperationController controller;
+    
+        controller = new AmiraCleanDownloadSysOperationController();
+        controller.startOperation();
+    }
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+internal class AmiraCleanDownloadSysOperationService extends SysOperationServiceBase
+{
+    public void ProcessOperation(AmiraCleanDownloadSysOperationContract  _contract)
+    {
+        List              _StoreNum;
+        _StoreNum = _contract.parmStoreNum();
+        ListIterator li = new ListIterator(_StoreNum);
+        RetailCDXDownloadSession retailCDXDownloadSession,retailCDXDownloadSession_1;
+        RetailCDXDownloadSessionDataStore retailCDXDownloadSessionDataStore,retailCDXDownloadSessionDataStore_1;
+        while(li.more())
+        {
+            ttsbegin;
+            delete_from retailCDXDownloadSession
+                where retailCDXDownloadSession.CreatedDateTime >= _contract.parmDateFrom() &&
+                retailCDXDownloadSession.CreatedDateTime <= _contract.parmDateTo() 
+                //retailCDXDownloadSession.Status == RetailCDXDownloadSessionStatus::Applied //???/
+                exists join retailCDXDownloadSessionDataStore
+                where
+                retailCDXDownloadSessionDataStore.Session == retailCDXDownloadSession.RecId &&
+                retailCDXDownloadSessionDataStore.DataStore == RETAILCONNDATABASEPROFILE::find(li.value()).RecId;               
+
+            delete_from retailCDXDownloadSessionDataStore_1
+                where 
+                retailCDXDownloadSessionDataStore_1.DataStore ==  RETAILCONNDATABASEPROFILE::find(li.value()).RecId 
+                //retailCDXDownloadSessionDataStore_1.Status != RetailCDXDownloadSessionStatus::Applied//???
+                exists join retailCDXDownloadSession_1
+                where
+                retailCDXDownloadSessionDataStore_1.Session == retailCDXDownloadSession_1.RecId &&
+                retailCDXDownloadSession_1.CreatedDateTime >= _contract.parmDateFrom() &&
+                retailCDXDownloadSession_1.CreatedDateTime <= _contract.parmDateTo();
+            ttscommit;
+            li.next();
+        }
+        Info("All related records of download sessions have beed deleted.");
+    }
+
+}
